@@ -1,0 +1,77 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "pt-BR": {
+          "summary": "Teste para tentativa de conexão com o banco de dados a partir da Alexa",
+          "examplePhrases": [
+            "Alexa, abrir magnadata relatórios",
+            "Abrir Magnata relatórios",
+            "abrir teste do sistema"
+          ],
+          "keywords": [
+            "Magnadata",
+            "Oryx",
+            "OryxBI",
+            "BI"
+          ],
+          "name": "relatorio geral",
+          "description": "Teste para tentativa de conexão com o banco de dados a partir da Alexa, a partir do mysql e de uma alexa.",
+          "smallIconUri": "file://assets/images/pt-BR_smallIconUri.png",
+          "largeIconUri": "file://assets/images/pt-BR_largeIconUri.png"
+        }
+      },
+      "automaticDistribution": {
+        "isActive": false
+      },
+      "isAvailableWorldwide": false,
+      "testingInstructions": "{\"ask_dist_username\":\"magnadata\",\"ask_dist_password\":\"lacoste\",\"ask_dist_testing_instructions\":\"Sample Testing Instructions.\"}",
+      "category": "SMART_HOME",
+      "distributionMode": "PUBLIC",
+      "distributionCountries": [
+        "BR"
+      ]
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:908086728075:function:40159467-f348-4863-be6e-8d6c02e310cc:Release_0"
+        },
+        "interfaces": [],
+        "locales": {},
+        "regions": {
+          "EU": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:eu-west-1:908086728075:function:40159467-f348-4863-be6e-8d6c02e310cc:Release_0"
+            }
+          },
+          "NA": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:us-east-1:908086728075:function:40159467-f348-4863-be6e-8d6c02e310cc:Release_0"
+            }
+          },
+          "FE": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:us-west-2:908086728075:function:40159467-f348-4863-be6e-8d6c02e310cc:Release_0"
+            }
+          }
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "locales": {
+        "pt-BR": {}
+      },
+      "containsAds": false,
+      "isExportCompliant": true,
+      "isChildDirected": false,
+      "shoppingKit": {
+        "isShoppingActionsEnabled": false,
+        "isAmazonAssociatesOnAlexaEnabled": false
+      },
+      "usesPersonalInfo": false
+    }
+  }
+}

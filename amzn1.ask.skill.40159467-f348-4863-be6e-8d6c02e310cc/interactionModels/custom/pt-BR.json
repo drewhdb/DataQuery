@@ -1,0 +1,61 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "totalVendidoIntent",
+          "samples": [
+            "faturamento de hoje"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "totalProdutosVendidosIntent",
+          "samples": [
+            "quantidade vendida hoje"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "totalVendasIntent",
+          "samples": [
+            "total de vendas do dia"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "totalNovosClientesIntent",
+          "samples": [
+            "Novos clientes hoje"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "geralIntent",
+          "samples": [
+            "geral do dia"
+          ]
+        }
+      ],
+      "types": [],
+      "invocationName": "dados sistema"
+    }
+  }
+}
