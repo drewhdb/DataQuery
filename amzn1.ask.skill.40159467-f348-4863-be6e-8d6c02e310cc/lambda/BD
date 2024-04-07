@@ -1,0 +1,33 @@
+drop database if exists alexa;
+create database alexa;
+use alexa;
+
+-- cliente principal e sua consulta. Ex: DonCarli
+create table cli (
+  cliente varchar(20) primary key,
+  bloqueado decimal(1,0) default 0,
+  query text,
+  usuario varchar(10),
+  senha varchar(30),
+  port int(5),
+  ip varchar(15)
+);
+
+-- Aparelho do cliente. Ex: Echo da DonCarli, celular do dono, etc.
+create table dvc (
+  deviceId varchar(300) primary key,
+  descricao varchar(100) default '',
+  cliente varchar(20) not null,
+  data_criacao timestamp default now(),
+  bloqueado decimal(1,0) default 0,
+  FOREIGN KEY (deviceId) REFERENCES cli (cliente)
+);
+
+-- solicitação de uso da skill, conforme aparelho. Ex: Echo da DonCarli, celular do dono, etc.
+create table slc (
+  deviceId varchar(300) primary key,
+  nome varchar(20) not null,
+  data_solicitacao timestamp default now(),
+  bloqueado decimal(1,0) default 0,
+  tentativas int default 0
+);
