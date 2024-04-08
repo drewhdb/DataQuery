@@ -1,10 +1,100 @@
-function chamaApi(alexa) {
+const Alexa = require('ask-sdk-core');
+const mysql = require('mysql');
+
+let deviceId = 'deviceid';
+let cliente = 'cliente';
+
+const novaSolicitacao = "Parece que é a primeira vez que você está executando a skill nesse aparelho. Vou enviar uma solicitação para a equipe Magnadata analisar seu aparelho.";
+const repeteSolicitacao = "Este aparelho está aguardando resposta da solicitação. Se desejar, contate a Magnadata para pedir admissão.";
+const bloqueioSolicitacao = "Sua solicitação para esse aparelho foi bloqueada pelos provedores da Skill.";
+const bloqueioCliente = "Você está bloqueado para o uso dessa Skill. Qualquer dúvida contate a Magnadata para entender o que aconteceu.";
+const bloqueioDevice = "Este aparelho está bloqueado para o uso dessa Skill.";
+
+const conexao = {
+    "host" : "187.0.7.139",
+    "user" : "root",
+    "password" : "j4c4r3z40!",
+    "port" : "3306",
+    "database" : "alexa"
+};
+
+const LaunchRequestHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
+    },
+    async handle(handlerInput) {
+        const deviceId = handlerInput.requestEnvelope.context.System.device.deviceId;
+
+        const queryes = {
+            // na tabela dvc, ver se existe esse device cadastrado. 
+            'dvc': `select 1 as valor from dvc where dvc.deviceId = '${deviceId}';`,
+            // Se sim, ver se o device está bloqueado. Se não existir, SEGUIR
+            'dvc_blq': `select dvc.cliente as valor from dvc where dvc.deviceId = '${deviceId}' and dvc.bloqueado = 0 limit 1;`,
+            // Se estiver bloqueado, retornar que está bloqueado. Senão fazer select na tabela cli ver se o cliente está bloqueado
+            'cli_blq': `select 1 as valor from dvc inner join cli on cli.cliente = dvc.cliente where dvc.deviceId = '${deviceId}' and dvc.bloqueado = 0 and cli.bloqueado = 0 limit 1;`,
+            // Se estiver bloqueado, retornar que o cliente está bloqueado. Senão chamar API
+
+            // na tabela slc, ver se existe já uma solicitação para esse cliente. 
+            'slc': `select 1 as valor from slc where slc.deviceId = '${deviceId}' limit 1;`,
+            // Se existir, ver se a solicitação está bloqueada. Se não existir, SEGUIR
+            'slc_blq': `select 1 as valor from slc where slc.deviceId = '${deviceId}' and slc.bloqueado = 0 limit 1;`,
+            // Se estiver bloqueada, retornar que esse aparelho está bloqueado. Senão, somar tentativa +1.
+            'slc_ttv': `update slc set slc.tentativas = slc.tentativas + 1 where slc.deviceId = '${deviceId}';`,
+
+            // se não existir, criar solicitação e retornar que está aguardando solicitação ser aprovada
+            'slc_add': `insert into slc (deviceId) values ('${deviceId}');`
+        };
+        
+        let resultado = 'aaaa';
+        let retorno = await executeQuery(queryes['dvc_blq']);
+        if(retorno !== null){
+            cliente = retorno[0].valor;
+        }
+        
+        // testa se tem o device cadastrado
+        if (await executeQuery(queryes['dvc']) === null) {
+            // testa se tem o device como solicitação
+            if (await executeQuery(queryes['slc']) === null) {
+                // insere o device como solicitação
+                await executeInsert(queryes['slc_add']);
+                resultado = novaSolicitacao;
+            // testa se a solicitação está bloqueada
+            } else if (await executeQuery(queryes['slc_blq']) === null) {
+                // retorna pro usuario que a solicitação não é mais permitida
+                 resultado = bloqueioSolicitacao;
+            } else {
+                // soma a tentativa de solicitação
+                executeInsert(queryes['slc_ttv']);
+                resultado = repeteSolicitacao;
+            }
+        } else {
+            // testa se o device cadastrado está bloqueado
+            if (await executeQuery(queryes['dvc_blq']) === null) {
+                // retorna que está bloqueado
+                resultado = bloqueioDevice;
+            // verifica se o cliente está bloqueado
+            } else if (await executeQuery(queryes['cli_blq']) === null){
+                resultado = bloqueioCliente;
+            } else {
+                // retorna a query (chama a API)
+                resultado = 'tudo certo';
+            }
+          }
+            
+        return handlerInput.responseBuilder
+            .speak(resultado)
+            .getResponse();
+    }
+};
+
+function executeInsert(query) {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection({
             host: conexao["host"],
             user: conexao["user"],
             password: conexao["password"],
-            port: conexao["port"]
+            port: conexao["port"],
+            database: conexao['database']
         });
 
         connection.connect(err => {
@@ -12,14 +102,14 @@ function chamaApi(alexa) {
                 console.error('Erro ao conectar ao banco de dados:', err);
                 reject(err);
             } else {
-                connection.query('INSERT INTO teste.chamadas (alexa) VALUES ("' + alexa + '");', (error, results) => {
+                connection.query(query, (error, results) => {
                     connection.end();
                     
                     if (error) {
-                        console.error('Erro ao executar a consulta:', error);
+                        console.error('Erro ao executar a inserção:', error);
                         reject(error);
                     } else {
-                        resolve("deu certo");
+                        resolve(results);
                     }
                 });
             }
@@ -28,168 +118,14 @@ function chamaApi(alexa) {
 }
 
 
-const Alexa = require('ask-sdk-core');
-
-const LaunchRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
-    },
-    handle(handlerInput) {
-        const deviceId = handlerInput.requestEnvelope.context.System.device.deviceId;
-        
-        chamaApi(deviceId);
-        
-        const speakOutput = 'Qual relatório você deseja??';
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            .getResponse();
-    }
-};
-
-const HelpIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Caso você precise de ajuda, contatar o suporte da Magnadata.';
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
-};
-
-const CancelAndStopIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
-                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Até a próxima.';
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
-};
-/* *
- * FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
- * It must also be defined in the language model (if the locale supports it)
- * This handler can be safely added but will be ingnored in locales that do not support it yet 
- * */
-const FallbackIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Tente novamente com um dos relatórios abaixo:';
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            .getResponse();
-    }
-};
-/* *
- * SessionEndedRequest notifies that a session was ended. This handler will be triggered when a currently open 
- * session is closed for one of the following reasons: 1) The user says "exit" or "quit". 2) The user does not 
- * respond or says something that does not match an intent defined in your voice model. 3) An error occurs 
- * */
-const SessionEndedRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
-    },
-    handle(handlerInput) {
-        console.log(`~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`);
-        // Any cleanup logic goes here.
-        return handlerInput.responseBuilder.getResponse(); // notice we send an empty response
-    }
-};
-/*
- * The intent reflector is used for interaction model testing and debugging.
- * It will simply repeat the intent the user said. You can create custom handlers for your intents 
- * by defining them above, then also adding them to the request handler chain below 
- * */
-const IntentReflectorHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest';
-    },
-    handle(handlerInput) {
-        const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
-        const speakOutput = `You just triggered ${intentName}`;
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-    }
-};
-
-
-/**
- * Generic error handling to capture any syntax or routing errors. If you receive an error
- * stating the request handler chain is not found, you have not implemented a handler for
- * the intent being invoked or included it in the skill builder below 
- * */
-const ErrorHandler = {
-    canHandle() {
-        return true;
-    },
-    handle(handlerInput, error) {
-        const resposta = "Algo deu errado. Tente verificar a conexão com o Banco de Dados.";
-        console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
-
-        return handlerInput.responseBuilder
-            .speak(resposta)
-            .reprompt(resposta)
-            .getResponse();
-    }
-};
-    
-/*
-=============================================================================================================
-    aqui começa a mudança. 
-    
-    Adicionar na skill da Alexa do cliente a conexão com o mysql e 
-        os relatórios que desejar. 
-        
-    Caso queira mais de uma conexão com um banco de dados, criar conectionLoja e mysqlLoja, por exemplo
-=============================================================================================================
-*/
-
-//=======================================
-// fazer conexão com o banco de dados
-//=======================================
-const mysql = require('mysql');
-
-const conexao = {
-    "host" : "187.0.7.139",
-    "user" : "root",
-    "password" : "j4c4r3z40!",
-    "port" : "3306",
-    "base" : "bebelandia"
-};
-
-const queryes = {
-    "totalVendidoIntent" :          "SELECT concat(header, ': ', value) as valor from " + conexao["base"] + ".pdv_valor_vendas;",
-    "totalProdutosVendidosIntent" : "SELECT concat(header, ': ', value) as valor from " + conexao["base"] + ".pdv_tot_qtde_vendas;",
-    "totalNovosClientesIntent" :    "SELECT concat(header, ': ', value) as valor from " + conexao["base"] + ".pdv_qtde_vendas_novos_clientes;",
-    "totalVendasIntent" :           "SELECT concat(header, ': ', value) as valor from " + conexao["base"] + ".pdv_tot_vendas;"
-}
-
-// Função para conectar e consultar o banco de dados
 function executeQuery(query) {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection({
             host: conexao["host"],
             user: conexao["user"],
             password: conexao["password"],
-            port: conexao["port"]
+            port: conexao["port"],
+            database: conexao['database']
         });
 
         connection.connect(err => {
@@ -204,173 +140,49 @@ function executeQuery(query) {
                         console.error('Erro ao executar a consulta:', error);
                         reject(error);
                     } else {
-                        resolve(results);
+                        if (results.length === 0) {
+                            resolve(null);
+                        } else {
+                            resolve(results);
+                        }
                     }
                 });
             }
         });
     });
 }
-
-//=======================================
-// handlers dos relatórios
-//=======================================
-
-const totalVendidoIntentHandler = {
+const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'totalVendidoIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
+                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
-    async handle(handlerInput) {
-        try {
-            const resultados = await executeQuery(queryes[handlerInput.requestEnvelope.request.intent.name]);
+    handle(handlerInput) {
+        const speakOutput = 'Até a próxima.';
 
-            return handlerInput.responseBuilder
-                .speak(resultados[0].valor)
-                .reprompt('Qual outro relatório você deseja?')
-                .getResponse();
-        } catch (error) {
-            console.error('Erro ao obter o relatório:', error);
-            const resposta = "Desculpe, houve um erro ao obter o relatório.";
-            return handlerInput.responseBuilder
-                .speak(resposta)
-                .reprompt(resposta)
-                .getResponse();
-        }
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
     }
 };
 
-// ---- 
-
-const totalProdutosVendidosIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'totalProdutosVendidosIntent';
+const ErrorHandler = {
+    canHandle() {
+        return true;
     },
-    async handle(handlerInput) {
-        try {
-            const resultados = await executeQuery(queryes[handlerInput.requestEnvelope.request.intent.name]);
+    handle(handlerInput, error) {
+        const resposta = "Tivemos um problema na conexão com o banco de dados.";
 
-            return handlerInput.responseBuilder
-                .speak(resultados[0].valor)
-                .reprompt('Qual outro relatório você deseja?')
-                .getResponse();
-        } catch (error) {
-            console.error('Erro ao obter o relatório:', error);
-            const resposta = "Desculpe, houve um erro ao obter o relatório.";
-            return handlerInput.responseBuilder
-                .speak(resposta)
-                .reprompt(resposta)
-                .getResponse();
-        }
+        return handlerInput.responseBuilder
+            .speak(resposta)
+            .getResponse();
     }
 };
-
-// ---- 
-
-const totalNovosClientesIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'totalNovosClientesIntent';
-    },
-    async handle(handlerInput) {
-        try {
-            const resultados = await executeQuery(queryes[handlerInput.requestEnvelope.request.intent.name]);
-
-            return handlerInput.responseBuilder
-                .speak(resultados[0].valor)
-                .reprompt('Qual outro relatório você deseja?')
-                .getResponse();
-        } catch (error) {
-            console.error('Erro ao obter o relatório:', error);
-            const resposta = "Desculpe, houve um erro ao obter o relatório.";
-            return handlerInput.responseBuilder
-                .speak(resposta)
-                .reprompt(resposta)
-                .getResponse();
-        }
-    }
-};
-
-// ---- 
-
-const totalVendasIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'totalVendasIntent';
-    },
-    async handle(handlerInput) {
-        try {
-            const resultados = await executeQuery(queryes[handlerInput.requestEnvelope.request.intent.name]);
-
-            return handlerInput.responseBuilder
-                .speak(resultados[0].valor)
-                .reprompt('Qual outro relatório você deseja?')
-                .getResponse();
-        } catch (error) {
-            console.error('Erro ao obter o relatório:', error);
-            const resposta = "Desculpe, houve um erro ao obter o relatório.";
-            return handlerInput.responseBuilder
-                .speak(resposta)
-                .reprompt(resposta)
-                .getResponse();
-        }
-    }
-};
-
-
-// ---- 
-
-const geralIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'geralIntent';
-    },
-    async handle(handlerInput) {
-        try {
-            let resultado = '';
-            for (const intentName in queryes) {
-                const query = queryes[intentName];
-                const resultados = await executeQuery(query);
-                // Vamos concatenar os resultados de cada consulta
-                resultado += `${resultados[0].valor}. `;
-            }
-        
-            return handlerInput.responseBuilder
-                .speak(resultado)
-                .reprompt('Qual outro relatório você deseja?')
-                .getResponse();
-        } catch (error) {
-            console.error('Erro ao obter o relatório:', error);
-            const resposta = "Desculpe, houve um erro ao obter o relatório.";
-            return handlerInput.responseBuilder
-                .speak(resposta)
-                .reprompt(resposta)
-                .getResponse();
-        }
-    }
-};
-
-//
-// etapa final: colocar os handlers criados anteriormente aqui
-//
 
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        
-        totalVendidoIntentHandler,
-        totalProdutosVendidosIntentHandler,
-        totalNovosClientesIntentHandler,
-        totalVendasIntentHandler,
-        geralIntentHandler,
-
-        HelpIntentHandler,
-        CancelAndStopIntentHandler,
-        FallbackIntentHandler,
-        SessionEndedRequestHandler,
-        IntentReflectorHandler)
-    .addErrorHandlers(
-        ErrorHandler)
+        CancelAndStopIntentHandler
+    ).addErrorHandlers(ErrorHandler)
     .withCustomUserAgent('sample/hello-world/v1.2')
     .lambda();
