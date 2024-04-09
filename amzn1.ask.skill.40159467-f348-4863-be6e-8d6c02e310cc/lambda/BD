@@ -4,7 +4,8 @@ use alexa;
 
 -- cliente principal e sua consulta. Ex: DonCarli
 create table cli (
-  cliente varchar(20) primary key,
+  cliente varchar(18) primary key,
+  nome varchar(20) not null,
   bloqueado decimal(1,0) default 0,
   query text,
   usuario varchar(10),
