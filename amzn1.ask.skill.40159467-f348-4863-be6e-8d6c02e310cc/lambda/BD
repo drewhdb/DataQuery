@@ -5,7 +5,6 @@ use alexa;
 -- cliente principal e sua consulta. Ex: DonCarli
 create table cli (
   cliente varchar(18) primary key,
-  nome varchar(20) not null,
   bloqueado decimal(1,0) default 0,
   query text,
   user varchar(10),
@@ -21,7 +20,7 @@ create table dvc (
   cliente varchar(20) not null,
   data_criacao timestamp default now(),
   bloqueado decimal(1,0) default 0,
-  FOREIGN KEY (deviceId) REFERENCES cli (cliente)
+  FOREIGN KEY (cliente) REFERENCES cli (cliente)
 );
 
 -- solicitação de uso da skill, conforme aparelho. Ex: Echo da DonCarli, celular do dono, etc.
@@ -32,3 +31,6 @@ create table slc (
   bloqueado decimal(1,0) default 0,
   tentativas int default 0
 );
+
+insert into cli (cliente, bloqueado, query, user, pass, port, host) values ('teste', 0, 'select 1;', 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
+insert into dvc (deviceId, descricao, cliente, data_criacao, bloqueado)  values ('amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', 'teste', now(), 0);
