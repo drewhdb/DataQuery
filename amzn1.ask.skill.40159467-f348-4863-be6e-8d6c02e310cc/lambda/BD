@@ -8,10 +8,10 @@ create table cli (
   nome varchar(20) not null,
   bloqueado decimal(1,0) default 0,
   query text,
-  usuario varchar(10),
-  senha varchar(30),
+  user varchar(10),
+  pass varchar(30),
   port int(5),
-  ip varchar(15)
+  host varchar(15)
 );
 
 -- Aparelho do cliente. Ex: Echo da DonCarli, celular do dono, etc.
