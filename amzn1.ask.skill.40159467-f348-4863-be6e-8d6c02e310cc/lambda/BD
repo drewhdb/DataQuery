@@ -3,34 +3,55 @@ create database alexa;
 use alexa;
 
 -- cliente principal e sua consulta. Ex: DonCarli
-create table cli (
-  cliente varchar(18) primary key,
-  bloqueado decimal(1,0) default 0,
-  query text,
-  user varchar(10),
-  pass varchar(30),
-  port int(5),
-  host varchar(15)
-);
+CREATE TABLE  `cli` (
+  `cliente` varchar(18) NOT NULL,
+  `bloqueado` decimal(1,0) DEFAULT '0',
+  `user` varchar(10) DEFAULT NULL,
+  `pass` varchar(30) DEFAULT NULL,
+  `port` int(5) DEFAULT NULL,
+  `host` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Aparelho do cliente. Ex: Echo da DonCarli, celular do dono, etc.
-create table dvc (
-  deviceId varchar(300) primary key,
-  descricao varchar(100) default '',
-  cliente varchar(20) not null,
-  data_criacao timestamp default now(),
-  bloqueado decimal(1,0) default 0,
-  FOREIGN KEY (cliente) REFERENCES cli (cliente)
-);
+CREATE TABLE `dvc` (
+  `deviceId` varchar(300) NOT NULL,
+  `descricao` varchar(100) DEFAULT '',
+  `cliente` varchar(20) NOT NULL,
+  `data_criacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `bloqueado` decimal(1,0) DEFAULT '0',
+  PRIMARY KEY (`deviceId`),
+  KEY `cliente` (`cliente`),
+  CONSTRAINT `dvc_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- queryes dos clientes
+CREATE TABLE  `qry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente` varchar(20) NOT NULL,
+  `query` text,
+  PRIMARY KEY (`id`),
+  KEY `cliente` (`cliente`),
+  CONSTRAINT `qry_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
 
 -- solicitação de uso da skill, conforme aparelho. Ex: Echo da DonCarli, celular do dono, etc.
-create table slc (
-  deviceId varchar(300) primary key,
-  nome varchar(20) not null,
-  data_solicitacao timestamp default now(),
-  bloqueado decimal(1,0) default 0,
-  tentativas int default 0
-);
+CREATE TABLE  `slc` (
+  `deviceId` varchar(300) NOT NULL,
+  `nome` varchar(20) NOT NULL,
+  `data_solicitacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `bloqueado` decimal(1,0) DEFAULT '0',
+  `tentativas` int(11) DEFAULT '0',
+  PRIMARY KEY (`deviceId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into cli (cliente, bloqueado, query, user, pass, port, host) values ('teste', 0, 'select 1;', 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
-insert into dvc (deviceId, descricao, cliente, data_criacao, bloqueado)  values ('amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', 'teste', now(), 0);
+
+
+insert into cli values ('bebelandia', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
+insert into dvc values ('amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', 'bebelandia', now(), 0);
+insert into qry values (1,'bebelandia', 'select value as \'total vendido\' from bebelandia.pdv_valor_vendas;');
+insert into qry values (2,'bebelandia', 'select value as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
+insert into qry values (3,'bebelandia', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
+insert into qry values (4,'bebelandia', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
