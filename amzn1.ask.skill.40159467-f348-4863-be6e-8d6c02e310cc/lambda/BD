@@ -22,7 +22,7 @@ CREATE TABLE `dvc` (
   `bloqueado` decimal(1,0) DEFAULT '0',
   PRIMARY KEY (`deviceId`),
   KEY `cliente` (`cliente`),
-  CONSTRAINT `dvc_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`)
+  CONSTRAINT `dvc_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -33,7 +33,7 @@ CREATE TABLE  `qry` (
   `query` text,
   PRIMARY KEY (`id`),
   KEY `cliente` (`cliente`),
-  CONSTRAINT `qry_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`)
+  CONSTRAINT `qry_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`) on delete cascade
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 
