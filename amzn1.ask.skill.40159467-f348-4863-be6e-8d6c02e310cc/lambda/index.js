@@ -1,22 +1,6 @@
 const Alexa = require('ask-sdk-core');
-const mysql = require('mysql');
 
 let deviceId = 'deviceid';
-let cliente = 'cliente';
-
-const novaSolicitacao = "Parece que é a primeira vez que você está executando a skill nesse aparelho. Vou enviar uma solicitação para a equipe Magnadata analisar seu aparelho.";
-const repeteSolicitacao = "Este aparelho está aguardando resposta da solicitação. Se desejar, contate a Magnadata para pedir admissão.";
-const bloqueioSolicitacao = "Sua solicitação para esse aparelho foi bloqueada pelos provedores da Skill.";
-const bloqueioCliente = "Você está bloqueado para o uso dessa Skill. Qualquer dúvida contate a Magnadata para entender o que aconteceu.";
-const bloqueioDevice = "Este aparelho está bloqueado para o uso dessa Skill.";
-
-const conexao = {
-    "host" : "187.0.7.139",
-    "user" : "root",
-    "password" : "j4c4r3z40!",
-    "port" : "3306",
-    "database" : "alexa"
-};
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -24,133 +8,25 @@ const LaunchRequestHandler = {
     },
     async handle(handlerInput) {
         const deviceId = handlerInput.requestEnvelope.context.System.device.deviceId;
-
-        const queryes = {
-            // na tabela dvc, ver se existe esse device cadastrado. 
-            'dvc': `select 1 as valor from dvc where dvc.deviceId = '${deviceId}';`,
-            // Se sim, ver se o device está bloqueado. Se não existir, SEGUIR
-            'dvc_blq': `select dvc.cliente as valor from dvc where dvc.deviceId = '${deviceId}' and dvc.bloqueado = 0 limit 1;`,
-            // Se estiver bloqueado, retornar que está bloqueado. Senão fazer select na tabela cli ver se o cliente está bloqueado
-            'cli_blq': `select 1 as valor from dvc inner join cli on cli.cliente = dvc.cliente where dvc.deviceId = '${deviceId}' and dvc.bloqueado = 0 and cli.bloqueado = 0 limit 1;`,
-            // Se estiver bloqueado, retornar que o cliente está bloqueado. Senão chamar API
-
-            // na tabela slc, ver se existe já uma solicitação para esse cliente. 
-            'slc': `select 1 as valor from slc where slc.deviceId = '${deviceId}' limit 1;`,
-            // Se existir, ver se a solicitação está bloqueada. Se não existir, SEGUIR
-            'slc_blq': `select 1 as valor from slc where slc.deviceId = '${deviceId}' and slc.bloqueado = 0 limit 1;`,
-            // Se estiver bloqueada, retornar que esse aparelho está bloqueado. Senão, somar tentativa +1.
-            'slc_ttv': `update slc set slc.tentativas = slc.tentativas + 1 where slc.deviceId = '${deviceId}';`,
-
-            // se não existir, criar solicitação e retornar que está aguardando solicitação ser aprovada
-            'slc_add': `insert into slc (deviceId) values ('${deviceId}');`
-        };
+        const apiUrl = `http://localhost:89/alexa/script.js?deviceId=${deviceId}`;
+        let retorno = '';
         
-        let resultado = 'aaaa';
-        let retorno = await executeQuery(queryes['dvc_blq']);
-        if(retorno !== null){
-            cliente = retorno[0].valor;
-        }
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                retorno = data['return']; 
+        })
+            .catch(error => console.error('Error:', error));
+        });
+
+        let resultado = retorno['retorno'];
         
-        // testa se tem o device cadastrado
-        if (await executeQuery(queryes['dvc']) === null) {
-            // testa se tem o device como solicitação
-            if (await executeQuery(queryes['slc']) === null) {
-                // insere o device como solicitação
-                await executeInsert(queryes['slc_add']);
-                resultado = novaSolicitacao;
-            // testa se a solicitação está bloqueada
-            } else if (await executeQuery(queryes['slc_blq']) === null) {
-                // retorna pro usuario que a solicitação não é mais permitida
-                 resultado = bloqueioSolicitacao;
-            } else {
-                // soma a tentativa de solicitação
-                executeInsert(queryes['slc_ttv']);
-                resultado = repeteSolicitacao;
-            }
-        } else {
-            // testa se o device cadastrado está bloqueado
-            if (await executeQuery(queryes['dvc_blq']) === null) {
-                // retorna que está bloqueado
-                resultado = bloqueioDevice;
-            // verifica se o cliente está bloqueado
-            } else if (await executeQuery(queryes['cli_blq']) === null){
-                resultado = bloqueioCliente;
-            } else {
-                // retorna a query (chama a API)
-                resultado = 'tudo certo';
-            }
-          }
-            
         return handlerInput.responseBuilder
             .speak(resultado)
             .getResponse();
     }
 };
 
-function executeInsert(query) {
-    return new Promise((resolve, reject) => {
-        const connection = mysql.createConnection({
-            host: conexao["host"],
-            user: conexao["user"],
-            password: conexao["password"],
-            port: conexao["port"],
-            database: conexao['database']
-        });
-
-        connection.connect(err => {
-            if (err) {
-                console.error('Erro ao conectar ao banco de dados:', err);
-                reject(err);
-            } else {
-                connection.query(query, (error, results) => {
-                    connection.end();
-                    
-                    if (error) {
-                        console.error('Erro ao executar a inserção:', error);
-                        reject(error);
-                    } else {
-                        resolve(results);
-                    }
-                });
-            }
-        });
-    });
-}
-
-
-function executeQuery(query) {
-    return new Promise((resolve, reject) => {
-        const connection = mysql.createConnection({
-            host: conexao["host"],
-            user: conexao["user"],
-            password: conexao["password"],
-            port: conexao["port"],
-            database: conexao['database']
-        });
-
-        connection.connect(err => {
-            if (err) {
-                console.error('Erro ao conectar ao banco de dados:', err);
-                reject(err);
-            } else {
-                connection.query(query, (error, results) => {
-                    connection.end();
-                    
-                    if (error) {
-                        console.error('Erro ao executar a consulta:', error);
-                        reject(error);
-                    } else {
-                        if (results.length === 0) {
-                            resolve(null);
-                        } else {
-                            resolve(results);
-                        }
-                    }
-                });
-            }
-        });
-    });
-}
 const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
