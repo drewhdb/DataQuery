@@ -2,7 +2,7 @@ drop database if exists alexa;
 create database alexa;
 use alexa;
 
--- cliente principal e sua consulta. Ex: DonCarli
+-- cliente principal e sua consulta. Ex: Bebelandia
 CREATE TABLE  `cli` (
   `cliente` varchar(18) NOT NULL,
   `bloqueado` decimal(1,0) DEFAULT '0',
@@ -13,7 +13,7 @@ CREATE TABLE  `cli` (
   PRIMARY KEY (`cliente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Aparelho do cliente. Ex: Echo da DonCarli, celular do dono, etc.
+-- Aparelho do cliente. Ex: Echo da Bebelandia, celular do dono, etc.
 CREATE TABLE `dvc` (
   `cliente` varchar(20) NOT NULL,
   `deviceId` varchar(300) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE  `qry` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 
--- solicitação de uso da skill, conforme aparelho. Ex: Echo da DonCarli, celular do dono, etc.
+-- solicitação de uso da skill, conforme aparelho. Ex: Echo da Bebelandia, celular do dono, etc.
 CREATE TABLE  `slc` (
   `deviceId` varchar(300) NOT NULL,
   `nome` varchar(20),
