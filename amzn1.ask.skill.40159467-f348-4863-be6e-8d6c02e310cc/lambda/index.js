@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk-core');
+const http = require('http');
 
-let deviceId = 'deviceid';
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -8,24 +8,44 @@ const LaunchRequestHandler = {
     },
     async handle(handlerInput) {
         const deviceId = handlerInput.requestEnvelope.context.System.device.deviceId;
-        const apiUrl = `http://localhost:89/alexa/script.js?deviceId=${deviceId}`;
-        let retorno = '';
-        
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                retorno = data['return']; 
-        })
-            .catch(error => console.error('Error:', error));
-        });
-
-        let resultado = retorno['retorno'];
-        
+        const apiUrl = `http://187.0.7.139:89/alexa/script.js?deviceId=${deviceId}`;
+    
+        let resultado = '';
+    
+        try {
+            resultado = await new Promise((resolve, reject) => {
+                http.get(apiUrl, (res) => {
+                    let data = '';
+    
+                    // A chunk of data has been received.
+                    res.on('data', (chunk) => {
+                        data += chunk;
+                    });
+    
+                    // The whole response has been received. Print out the result.
+                    res.on('end', () => {
+                        try {
+                            const parsedData = JSON.parse(data);
+                            resolve(parsedData.return); // Ajuste conforme a estrutura da sua resposta
+                        } catch (e) {
+                            reject('Erro ao analisar a resposta da API');
+                        }
+                    });
+    
+                }).on('error', (err) => {
+                    reject('Erro ao chamar a API');
+                });
+            });
+        } catch (error) {
+            console.log(error);
+            resultado = 'Erro ao chamar a API';
+        }
+    
         return handlerInput.responseBuilder
             .speak(resultado)
             .getResponse();
     }
-};
+}
 
 const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
@@ -47,7 +67,7 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const resposta = "Tivemos um problema na conexão com o banco de dados.";
+        const resposta = "Erro.";
 
         return handlerInput.responseBuilder
             .speak(resposta)
