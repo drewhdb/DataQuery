@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testa API</title>
+</head>
+<body style="text-align: center; margin-top: 10em">
+    <p>Device: amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV</p>
+    <button id="callApiButton" style="width: 14rem; height: 14rem; border: 1px black solid; font-size: 4em;">Call API</button>
+
+    <script>
+        document.getElementById('callApiButton').addEventListener('click', function() {
+            const deviceId = '1';
+            const apiUrl = `http://192.168.1.14:89/alexa/script.js?deviceId=${deviceId}`;
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('GET', apiUrl, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.log('Erro ao chamar a API');
+                    }
+                }
+            };
+            xhr.send();
+        });
+    </script>
+</body>
+</html>
