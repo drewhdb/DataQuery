@@ -2,49 +2,7 @@ drop database if exists alexa;
 create database alexa;
 use alexa;
 
--- cliente principal e sua consulta. Ex: Bebelandia
-CREATE TABLE  `cli` (
-  `cliente` varchar(18) NOT NULL,
-  `bloqueado` decimal(1,0) DEFAULT '0',
-  `user` varchar(10) DEFAULT NULL,
-  `pass` varchar(30) DEFAULT NULL,
-  `port` int(5) DEFAULT NULL,
-  `host` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`cliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Aparelho do cliente. Ex: Echo da Bebelandia, celular do dono, etc.
-CREATE TABLE `dvc` (
-  `cliente` varchar(20) NOT NULL,
-  `deviceId` varchar(300) NOT NULL,
-  `descricao` varchar(100) DEFAULT '',
-  `data_criacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `bloqueado` decimal(1,0) DEFAULT '0',
-  PRIMARY KEY (`deviceId`, `cliente`),
-  CONSTRAINT `dvc_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`) on delete cascade
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
--- queryes dos clientes
-CREATE TABLE  `qry` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cliente` varchar(20) NOT NULL,
-  `query` text,
-  PRIMARY KEY (`id`, `cliente`),
-  CONSTRAINT `qry_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`) on delete cascade
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
-
--- solicitação de uso da skill, conforme aparelho. Ex: Echo da Bebelandia, celular do dono, etc.
-CREATE TABLE  `slc` (
-  `deviceId` varchar(300) NOT NULL,
-  `nome` varchar(20),
-  `data_solicitacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `bloqueado` decimal(1,0) DEFAULT '0',
-  `tentativas` int(11) DEFAULT '0',
-  PRIMARY KEY (`deviceId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+-- mensagens de retorno
 CREATE TABLE `rtn` (
   `chave` varchar(30) NOT NULL,
   `texto` text NOT NULL,
@@ -57,9 +15,70 @@ insert into rtn values ('bloqueioSolicitacao', 'Sua solicitação para esse apar
 insert into rtn values ('bloqueioCliente', 'Você está bloqueado para o uso dessa Skill. Qualquer dúvida contate a Magnadata para entender o que aconteceu.');
 insert into rtn values ('bloqueioDevice', 'Este aparelho está bloqueado para o uso dessa Skill.');
 
-insert into cli values ('bebelandia', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
+-- cliente, aparelho do cliente, grupo de queryes do cliente e queryes do cliente
+CREATE TABLE  `alexa`.`cli` (
+  `cliente` varchar(20) NOT NULL,
+  `bloqueado` decimal(1,0) DEFAULT '0',
+  `user` varchar(10) DEFAULT NULL,
+  `pass` varchar(30) DEFAULT NULL,
+  `port` int(5) DEFAULT NULL,
+  `host` varchar(15) DEFAULT NULL,
+  `ultima_execucao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE  `alexa`.`dvc` (
+  `cliente` varchar(20) NOT NULL,
+  `deviceId` varchar(300) NOT NULL,
+  `descricao` varchar(100) DEFAULT '',
+  `data_criacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `bloqueado` decimal(1,0) DEFAULT '0',
+  PRIMARY KEY (`deviceId`,`cliente`),
+  KEY `dvc_fk_1` (`cliente`),
+  CONSTRAINT `dvc_fk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE  `alexa`.`grp` (
+  `grupo` varchar(30) NOT NULL,
+  PRIMARY KEY (`grupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE  `alexa`.`qry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente` varchar(20) NOT NULL,
+  `query` text NOT NULL,
+  `grupo` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`,`cliente`),
+  KEY `qry_fk_cliente` (`cliente`),
+  KEY `qry_fk_grupo` (`grupo`),
+  CONSTRAINT `qry_fk_cliente` FOREIGN KEY (`cliente`) REFERENCES `cli` (`cliente`) ON DELETE CASCADE,
+  CONSTRAINT `qry_fk_grupo` FOREIGN KEY (`grupo`) REFERENCES `grp` (`grupo`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- solicitação de uso da skill, conforme aparelho
+CREATE TABLE  `slc` (
+  `deviceId` varchar(300) NOT NULL,
+  `nome` varchar(20),
+  `data_solicitacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `bloqueado` decimal(1,0) DEFAULT '0',
+  `tentativas` int(11) DEFAULT '0',
+  PRIMARY KEY (`deviceId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+insert into grp values ('faturamento mensal'), ('faturamento diário');
+
+insert into cli values ('bebelandia', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139', null);
+insert into dvc values ('bebelandia', 'teste', 'Celular Andrew', now(), 0);
 insert into dvc values ('bebelandia', 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
-insert into qry (cliente, query) values ('bebelandia', 'select value as \'total vendido\' from bebelandia.pdv_valor_vendas;');
-insert into qry (cliente, query) values ('bebelandia', 'select value as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
-insert into qry (cliente, query) values ('bebelandia', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
-insert into qry (cliente, query) values ('bebelandia', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento mensal','select value as \'total vendido\' from bebelandia.pdv_valor_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento mensal', 'select value as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento diário', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
+insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento diário', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
+
+insert into cli values ('bebelandia loja', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139', null);
+insert into dvc values ('bebelandia loja', 'teste', 'Celular Andrew', now(), 0);
+insert into dvc values ('bebelandia loja', 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
+insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento mensal','select value as \'total vendido\' from bebelandia.pdv_valor_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento mensal', 'select value as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento diário', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
+insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento diário', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
