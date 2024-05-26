@@ -67,20 +67,20 @@ CREATE TABLE  `slc` (
 
 insert into grp values ('faturamento mensal'), ('faturamento diário');
 
-insert into cli values ('bebelandia', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139', null);
-insert into dvc values ('bebelandia', 'teste', 'Celular Andrew', now(), 0);
-insert into dvc values ('bebelandia', 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
-insert into dvc values ('bebelandia', 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 0);
-insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento mensal','select value as \'total vendido\' from bebelandia.pdv_valor_vendas;');
-insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento mensal', 'select value as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
-insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento diário', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
-insert into qry (cliente, grupo, query) values ('bebelandia', 'faturamento diário', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
+insert into cli values ('bebelândia', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139', null);
+insert into dvc values ('bebelândia', 'teste', 'Celular Andrew', now(), 0);
+insert into dvc values ('bebelândia', 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
+insert into dvc values ('bebelândia', 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 0);
+insert into qry (cliente, grupo, query) values ('bebelândia', 'faturamento mensal','select FLOOR(value) as \'total vendido\' from bebelandia.pdv_valor_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelândia', 'faturamento mensal', 'select FLOOR(value) as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelândia', 'faturamento diário', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
+insert into qry (cliente, grupo, query) values ('bebelândia', 'faturamento diário', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
 
-insert into cli values ('bebelandia loja', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139', null);
-insert into dvc values ('bebelandia loja', 'teste', 'Celular Andrew', now(), 0);
-insert into dvc values ('bebelandia loja', 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
-insert into dvc values ('bebelandia loja', 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 0);
-insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento mensal','select value as \'total vendido\' from bebelandia.pdv_valor_vendas;');
-insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento mensal', 'select value as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
-insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento diário', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
-insert into qry (cliente, grupo, query) values ('bebelandia loja', 'faturamento diário', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
+insert into cli values ('bebelândia loja', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139', null);
+insert into dvc values ('bebelândia loja', 'teste', 'Celular Andrew', now(), 0);
+insert into dvc values ('bebelândia loja', 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
+insert into dvc values ('bebelândia loja', 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 0);
+insert into qry (cliente, grupo, query) values ('bebelândia loja', 'faturamento mensal','select FLOOR(value) as \'total vendido\' from bebelandia.pdv_valor_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelândia loja', 'faturamento mensal', 'select FLOOR(value) as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
+insert into qry (cliente, grupo, query) values ('bebelândia loja', 'faturamento diário', 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
+insert into qry (cliente, grupo, query) values ('bebelândia loja', 'faturamento diário', 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;');
