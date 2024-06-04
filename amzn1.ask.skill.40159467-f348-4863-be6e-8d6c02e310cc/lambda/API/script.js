@@ -8,7 +8,7 @@ const mysql = require('mysql2/promise');
 const cors = require('cors');
 app.use(cors());
 
-let deviceId, result = '', connection, query, rows, consultas, cliente;
+let deviceId, connection, rows, listReturns, consultas, cliente;
 
 const dbConfig = {
     host: '192.168.1.13',
@@ -18,37 +18,44 @@ const dbConfig = {
     database: 'alexa'
 };
 
-const novaSolicitacao = "Parece que é a primeira vez que você está executando a skill nesse aparelho. Vou enviar uma solicitação para a equipe Magnadata analisar seu aparelho.";
-const repeteSolicitacao = "Este aparelho está aguardando resposta da solicitação. Se desejar, contate a Magnadata para pedir admissão.";
-const bloqueioSolicitacao = "Sua solicitação para esse aparelho foi bloqueada pelos provedores da Skill.";
-const bloqueioCliente = "Você está bloqueado para o uso dessa Skill. Qualquer dúvida contate a Magnadata para entender o que aconteceu.";
-const bloqueioDevice = "Este aparelho está bloqueado para o uso dessa Skill.";
-
 app.get('/alexa/script.js', async (req, res) => {
     deviceId = req.query.deviceId;
+
     if (!deviceId) {
         return res.status(400).send({'return' : 'Parâmetro "deviceId" é necessário.'});
     }
 
     // consulta cliente na alexa
-    query = 'SELECT cli.cliente, user, host, pass, port, cli.bloqueado as cliBlq, dvc.bloqueado as dvcBlq FROM cli INNER JOIN dvc ON dvc.cliente = cli.cliente WHERE deviceId = \'' + deviceId + '\';';
+    let query = 'SELECT cli.cliente, cli.nome, user, host, pass, port, cli.bloqueado as cliBlq, dvc.bloqueado as dvcBlq FROM cli INNER JOIN dvc ON dvc.cliente = cli.cliente WHERE deviceId = \'' + deviceId + '\';';
+    let queryReturns = 'SELECT * FROM rtn;';
 
     try {
         connection = await mysql.createConnection(dbConfig);
-        rows = await connection.execute(query);
+    	rows = await connection.execute(query);	
+	    listReturns = await connection.execute(queryReturns);
         connection.end();
     } catch (error) {
         return res.status(500).send({'return' : 'Erro ao se conectar ao banco de dados principal.'});
     }
+
+    const bloqueioCliente = listReturns[0][0]['texto'];
+    const bloqueioDevice = listReturns[0][1]['texto'];
+    const bloqueioSolicitacao = listReturns[0][2]['texto'];
+    const novaSolicitacao = listReturns[0][3]['texto'];
+    const repeteSolicitacao = listReturns[0][4]['texto'];
         
     // testa se o cliente está ativo
-    if (rows[0].length == 1){ //existe device
-        cliente = rows[0][0]['cliente'];
-        if(rows[0][0]['cliBlq'] == 1){ //testa se o cliente está bloqueado
-            return res.send({'return' : bloqueioCliente}); 
-        } else if (rows[0][0]['dvcBlq'] == 1){ // testa se o device está bloqueado
+    if (rows[0].length >= 1){ //existe device
+        if (rows[0][0]['dvcBlq'] == 1){ // testa se o device está bloqueado
             return res.send({'return' : bloqueioDevice}); 
-        }
+        } 
+        // for (let i = 0; i < rows[0].length; i++) {
+        //     if (rows[0][i]['cliBlq'] == 1){
+        //         console.log('cliente bloqueado');
+        //         return res.send({'return' : bloqueioCliente}); 
+        //     }
+        // }
+
     } else {
         querySolicitacao = 'SELECT * FROM slc WHERE deviceId = \'' + deviceId + '\';';
 
@@ -59,8 +66,7 @@ app.get('/alexa/script.js', async (req, res) => {
         } catch (error) {
             return res.status(500).send({'return' : 'Erro ao se conectar ao banco de dados principal.'});
         }
-
-        
+  
         if (rows[0].length == 1){ //existe solicitação
             if(rows[0][0]['bloqueado'] == 1){ // solicitação bloqueada
                 return res.send({'return' : bloqueioSolicitacao});
@@ -89,49 +95,69 @@ app.get('/alexa/script.js', async (req, res) => {
         }
     }
 
-    // consulta queryes a partir do cliente
-    query_consultas = 'SELECT query FROM qry WHERE cliente = \'' + cliente + '\';';
-
-    try {
-        connection = await mysql.createConnection(dbConfig);
-        consultas = await connection.execute(query_consultas);
-        connection.end();
-    } catch (error) {
-        return res.status(500).send({'return' : 'Erro ao se conectar ao banco de dados principal.'});
-    }
-
-    lista_consultas = consultas[0];
-    
-    if(lista_consultas.length == 0){
-        return res.send({'return' : 'Cliente não possui queryes.'});
-    }
-
-    // conecta ao cliente
-    const dbClient = {
-        host: rows[0][0]['host'],
-        user: rows[0][0]['user'],
-        password: rows[0][0]['pass'],
-        port: rows[0][0]['port']
-    };
-
-    try {
-        connection_client = await mysql.createConnection(dbClient);
-
-        for (const item of lista_consultas) {
-            const consulta = await connection_client.execute(item.query);
-            
-            const key = Object.keys(consulta[0][0])[0];
-            const value = consulta[0][0][key];
-
-            console.log(key + ': ' + value + '.');
-            result += key + ': ' + value + '.';
-        }
+    let result = '';
+    for (let i = 0; i < rows[0].length; i++) {
+        cliente = rows[0][i]['nome'];
+        console.log('requisição de ' + cliente);
         
-        console.log(result);
+        if(rows[0][i]['cliBlq'] == 1){ //testa se o cliente está bloqueado
+            result += '; ; ; ' + cliente + ' está bloqueado para consultar. ';
+            break;
+        }
 
-        connection_client.end();
-    } catch (error) {
-        res.status(500).send({'return' : 'Erro ao se conectar ao banco de dados do cliente.'});
+        // consulta queryes a partir do cliente
+        query_consultas = 'SELECT query, grupo FROM qry WHERE cliente = \'' + cliente + '\'ORDER BY grupo;';
+        query_consultas_grupos = 'SELECT distinct grupo FROM qry WHERE cliente = \'' + cliente + '\'ORDER BY grupo;';
+        updateUltimaExecucao = 'UPDATE cli SET ultima_execucao = NOW() WHERE cliente = \'' + cliente + '\';';
+
+        try {
+            connection = await mysql.createConnection(dbConfig);
+            consultas = await connection.execute(query_consultas);
+            consultas_grupos = await connection.execute(query_consultas_grupos);
+            await connection.execute(updateUltimaExecucao)
+            connection.end();
+        } catch (error) {
+            return res.status(500).send({'return' : 'Erro ao se conectar ao banco de dados principal.'});
+        }
+
+        lista_consultas = consultas[0];
+        lista_grupos = consultas_grupos[0];
+        
+        if(lista_consultas.length == 0){
+            result += cliente + 'não possui consultas para relatar. . . ';
+        }
+
+        // conecta ao cliente
+        const dbClient = {
+            host: rows[0][i]['host'],
+            user: rows[0][i]['user'],
+            password: rows[0][i]['pass'],
+            port: rows[0][i]['port']
+        };
+        
+        try {
+            connection_client = await mysql.createConnection(dbClient);
+            result += 'Relatório ' + cliente + ': ';
+
+            for (let grupo in lista_grupos) {
+                result += '. . .' + lista_grupos[grupo]['grupo'] + ': ';
+                for (const item of lista_consultas) {
+                    if(item.grupo == lista_grupos[grupo]['grupo']){
+                        const consulta = await connection_client.execute(item.query);
+                        
+                        const key = Object.keys(consulta[0][0])[0];
+                        const value = consulta[0][0][key];
+        
+                        result += key + ': ' + value + '; ';    
+                    }
+                }
+            }
+            
+            connection_client.end();
+        } catch (error) {
+            result += '; ; ; Erro ao se conectar ao banco de dados do servidor ' + cliente + '. . . ';
+            //res.status(500).send({'return' : 'Erro ao se conectar ao banco de dados do cliente.'});
+        }
     }
 
     res.send({'return' : result});
