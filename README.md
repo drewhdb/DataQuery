@@ -2,6 +2,8 @@ _# projeto Projeto integrador 2024
 
 https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 
+https://www.canva.com/design/DAGBsv26MYc/1_93cT9uQputTXvGIbSkCQ/edit
+
 fazer tela de retorno fazer tela de grupos fazer edição e cadastro de queryes e devices nos clientes Solicitação virar Device, selecionando cliente -> usar mesma tela, se $_GET cliente for vazio, poder escolher
 
 DOCUMENTAÇÃO
