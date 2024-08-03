@@ -16,7 +16,7 @@ Solicitação virar Device, selecionando cliente -> usar mesma tela, se $_GET cl
 
 ----------------------------------
 ** DOCUMENTAÇÃO 
-**ETAPA1 1 - PROJETO DE PESQUISA**
+**ETAPA 1 - PROJETO DE PESQUISA**
 
 1. IDENTIFICAÇÃO DO PROJETO
 Aluno integrante: Andrew Horn de Borba
