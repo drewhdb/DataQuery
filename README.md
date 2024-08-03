@@ -9,9 +9,13 @@ https://www.canva.com/design/DAGBsv26MYc/1_93cT9uQputTXvGIbSkCQ/edit
 - Layout Site
 https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 
-fazer tela de retorno
-fazer tela de grupos
-fazer edição e cadastro de queryes e devices nos clientes
+criar queryes ativas ou inativas
+
+opção de inativar todas as queryes daquele grupo;
+query por cliente ou query geral;
+fazer tela de retorno;
+fazer tela de grupos;
+fazer edição e cadastro de queryes e devices nos clientes;
 Solicitação virar Device, selecionando cliente -> usar mesma tela, se $_GET cliente for vazio, poder escolher
 
 ----------------------------------
