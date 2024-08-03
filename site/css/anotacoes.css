@@ -1,0 +1,63 @@
+container {
+    grid-template-columns: repeat(auto-fit, minmax(10em, 20%));
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(213, 186, 33, 0.7);
+    border: solid 2px rgba(27, 27, 27, 1);
+    text-align: center;
+    transition: 2s;
+    text-decoration: none; 
+}
+
+.card:hover, .card:focus {
+    filter: brightness(150%);
+    transition: 2s;
+    background-color: rgba(213, 186, 33, 0.7);
+}
+
+.card .cardheader, .card .cardheader-view, .card .content {
+    width: 100%;
+    padding: 1em;
+}
+
+.card .cardheader p, .card .cardheader-view p {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 1);
+}
+
+.card .content {
+    padding: 0.5em 0;
+    min-height: 5em;
+    color: rgba(0, 0, 0, 1);
+    font-family: 'Comic Sans MS';
+}
+
+.card .cardheader {
+    background-color: rgba(0, 0, 0, 1);
+    border: solid 5px rgba(27, 27, 27, 1);
+}
+
+.card .cardheader-view {
+    background-color: rgb(110, 21, 212);
+    border: solid 5px rgb(83, 11, 199);
+}
+
+.add-card{
+    position: relative;
+    background-color: rgba(109, 25, 157, 1);
+    height: 3em;
+    border-radius: 20px;
+    border: rgba(0, 0, 0, 1) 1px solid;
+    box-shadow: 0px 0px 10px rgba(175, 65, 238, 1), 0px 0px 10px rgba(175, 65, 238, 1) inset;
+    color: #FFF;
+    width: 10em;
+}
+
+@media only screen and (max-width: 750px) {
+    container {
+        grid-template-columns: 100%;
+    }
+}

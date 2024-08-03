@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="author" content="Andrew Horn de Borba">
+ 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+ 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../css/formulario.css">
+ 
+    <link rel="shortcut icon" href="../../imagem/icon.png" type="image/x-icon">
+    <title>Cadastro</title>
+</head>
+<body>
+    <div class="content">
+        <form class="form" action="#" method="post">
+            <div>
+                <label for="nome" class="form_label">Nome</label>
+                <input type="text" name="nome" class="form_input" id="nome" placeholder="Nome" required>
+            </div>
+
+            <div>
+                <label for="estadocivil" class="form_label">Estado civil</label>
+                <select name="estadocivil" class="dropdown" required>
+                    <option selected disabled class="form_select_option" value="">Selecione</option>
+                    <option value="Solteiro" class="form_select_option">Solteiro(a)</option>
+                    <option value="Casado" class="form_select_option">Casado(a) </option>
+                    <option value="Divorciado" class="form_select_option">Divorciado(a)</option>
+                    <option value="Viúvo" class="form_select_option">Viúvo(a)</option>                
+                </select>
+            </div>
+
+                <div>
+                    <!-- foreach -->
+                    <input type="checkbox" class="form_input" id="html5" name="aprender" value="html5">
+                    <label for="html5" class="check_label">Html5</label>
+                </div>
+
+
+                <div>                    
+                    <label for="message" class="form_label"> Digite aqui sua mensagem:</label>
+                    <textarea id="myTextarea" oninput="autoResize()"></textarea>
+                </div>
+
+                <div>
+                    <input type="hidden" name="acao" value="enviar">
+                    <button type="submit" name="Submit" class="submit_btn" >Cadastrar</button>                
+
+                    <input type="hidden" name="acao" value="voltar">
+                    <button type="submit" name="Submit" class="submit_btn" >voltar</button>                
+                </div>
+        </form>
+    </div>
+                
+
+    <script>
+    function autoResize() {
+        const textarea = document.getElementById('myTextarea');
+        textarea.style.height = 'auto'; // Reseta a altura para permitir ajuste dinâmico
+        textarea.style.height = textarea.scrollHeight + 'px'; // Define a altura conforme o conteúdo
+    }
+    </script>
+
+    <script src="js/main.js"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

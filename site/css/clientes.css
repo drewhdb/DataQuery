@@ -1,0 +1,25 @@
+.link-div {
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    
+    flex: 1;
+    padding-top: 1em;
+    height: 3em;
+    background-color: blueviolet;
+    border: 1px solid black;
+    margin: 0 4% 0 0;
+    transition: 3s;
+    cursor: pointer;
+}
+
+.link {
+    font-size: smaller;
+    color: white;
+    text-decoration: none;
+}
+
+.link-div:hover, .link-div:focus {
+    background-color: rgb(94, 1, 182);
+    transition: 1s;
+}
