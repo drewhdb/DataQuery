@@ -50,6 +50,10 @@ form{
     border-radius: 20px;
 }
 
+.img{
+    text-align: center;
+}
+
 img{
     filter: drop-shadow(10px 10px 30px goldenrod);
 }
@@ -94,15 +98,17 @@ input{
     cursor: grab;
 }
 
+.aviso{
+    background-color: rgba(255, 0, 0, 0.5);
+    padding: 1em;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: rgba(255, 0, 0, 0.7) 0px 1px 1px 2px;
+}
+
 @media only screen and (max-width: 750px) {
     form{
         min-width: 17.5em;
-    }
-
-    .login{
-        background-size: contain;
-        object-fit: cover;
-        background: url('../imagem/login_mobile.png');
     }
 }
 

@@ -101,15 +101,23 @@ Itens que poderão ser contemplados nesta seção:
   
 5. ATIVIDADES E CRONOGRAMA
 
-Jul. **Finalizar API da Alexa** - ok
 
-Ago. **Finalizar site com CRUD de tudo completo.**
+Ago.
+Ver melhorias - anotar o que não será feito nessa versão;
+atualizar moqups conforme melhorias;
 
-Set. **Criar política de dados**  -- Apresentação do seminário de andamento
+Set. 
+Site;
+API;
 
-Out. **Lançar a Skill publicamente**
+Out. 
+Termos de uso;
+Lançar Skill para produção;
+Fluxogramas de funcionamento;
 
-Nov. **Testar diferentes cenários e analisar melhorias**
+Nov. 
+artigo TCC;
+apresentação TCC;
 
 Dez. Entrega do artigo científico e apresentação final do projeto
 

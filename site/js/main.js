@@ -103,3 +103,13 @@
 	init();
 
 })();
+
+function limitarTextarea(id, limite = 9999999999) {
+	var elemento = document.getElementById(id);
+	if (elemento.value.length > limite) {
+		elemento.value = elemento.value.substring(0, limite);
+	}
+
+	elemento.style.height = "auto"; // Redefine a altura para permitir que o navegador calcule a altura necessária
+	elemento.style.height = elemento.scrollHeight + 2 + "px"; // Define a altura com base no conteúdo
+}
