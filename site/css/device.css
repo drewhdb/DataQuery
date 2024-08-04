@@ -1,0 +1,25 @@
+.device {
+    width: 100%;
+    padding: 1em;
+    border: solid 1px black;
+    background-color: rgb(247, 247, 247);
+    margin-bottom: 0.5em;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.device fieldset {
+    width: 20%;
+    margin-right: 1.5em;
+}
+
+.device fieldset input {
+    width: 100%;
+}
+
+@media only screen and (max-width: 1000px) {
+    .device fieldset {
+        width: 100% !important;
+    }
+}
