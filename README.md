@@ -12,11 +12,15 @@ https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 criar queryes ativas ou inativas
 
 opção de inativar todas as queryes daquele grupo;
+
 importar query de outro cliente
 
 fazer tela de retorno;
+
 fazer tela de grupos;
+
 fazer edição e cadastro de queryes e devices nos clientes;
+
 Solicitação virar Device, selecionando cliente -> usar mesma tela, se $_GET cliente for vazio, poder escolher
 
 analisar se a Alexa consegue escolher qual grupo ela deseja;
@@ -107,23 +111,36 @@ Itens que poderão ser contemplados nesta seção:
 
 
 Ago.
+
 Ver melhorias - anotar o que não será feito nessa versão;
+
 atualizar moqups conforme melhorias;
 
+Fluxogramas de funcionamento;
+
 Set. 
+
 Site;
+
 API;
 
 Out. 
+
 Termos de uso;
+
 Lançar Skill para produção;
-Fluxogramas de funcionamento;
 
 Nov. 
+
 artigo TCC;
+
 apresentação TCC;
 
-Dez. Entrega do artigo científico e apresentação final do projeto
+Dez. 
+
+Entrega do artigo científico 
+
+apresentação final do projeto
 
 ----------------------------------
 **REFERENCIAS
