@@ -12,11 +12,15 @@ https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 criar queryes ativas ou inativas
 
 opção de inativar todas as queryes daquele grupo;
-query por cliente ou query geral;
+importar query de outro cliente
+
 fazer tela de retorno;
 fazer tela de grupos;
 fazer edição e cadastro de queryes e devices nos clientes;
 Solicitação virar Device, selecionando cliente -> usar mesma tela, se $_GET cliente for vazio, poder escolher
+
+analisar se a Alexa consegue escolher qual grupo ela deseja;
+
 
 ----------------------------------
 ** DOCUMENTAÇÃO 
