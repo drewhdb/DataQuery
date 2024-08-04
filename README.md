@@ -23,8 +23,24 @@ fazer edição e cadastro de queryes e devices nos clientes;
 
 Solicitação virar Device, selecionando cliente -> usar mesma tela, se $_GET cliente for vazio, poder escolher
 
+**MELHORAR SKILL**
 analisar se a Alexa consegue escolher qual grupo ela deseja;
 
+**MELHORAR API**
+melhorar criação consts 
+
+separar querycli e querydevice - 1 testa se o device está cadastrado e se está bloqueado.
+
+somente se a query estiver ativa
+
+testar caso não tenha registros
+
+1 device pode estar em mais de um cliente. cada cliente desse device terá um retorno.
+
+se não tiver grupo  - criar cadastro sem grupo , e não o dizer quando for esse parametro.
+
+
+fluxograma de funcionamento da API
 
 ----------------------------------
 ** DOCUMENTAÇÃO 
