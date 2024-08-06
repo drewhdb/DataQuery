@@ -9,20 +9,6 @@ https://www.canva.com/design/DAGBsv26MYc/1_93cT9uQputTXvGIbSkCQ/edit
 - Layout Site
 https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 
-criar queryes ativas ou inativas
-
-opção de inativar todas as queryes daquele grupo;
-
-importar query de outro cliente
-
-fazer tela de retorno;
-
-fazer tela de grupos;
-
-fazer edição e cadastro de queryes e devices nos clientes;
-
-Solicitação virar Device, selecionando cliente -> usar mesma tela, se $_GET cliente for vazio, poder escolher
-
 **MELHORAR SKILL**
 analisar se a Alexa consegue escolher qual grupo ela deseja;
 
@@ -38,9 +24,6 @@ testar caso não tenha registros
 1 device pode estar em mais de um cliente. cada cliente desse device terá um retorno.
 
 se não tiver grupo  - criar cadastro sem grupo , e não o dizer quando for esse parametro.
-
-
-fluxograma de funcionamento da API
 
 ----------------------------------
 ** DOCUMENTAÇÃO 
