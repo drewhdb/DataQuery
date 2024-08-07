@@ -11,8 +11,8 @@
 
     <script>
         document.getElementById('callApiButton').addEventListener('click', function() {
-            const deviceId = '1';
-            const apiUrl = `http://192.168.1.14:89/alexa/script.js?deviceId=${deviceId}`;
+            const deviceId = 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV';
+            const apiUrl = `http://187.0.7.139:89/alexa/script.js?deviceId=${deviceId}`;
             const xhr = new XMLHttpRequest();
 
             xhr.open('GET', apiUrl, true);

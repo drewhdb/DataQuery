@@ -43,7 +43,7 @@ app.get('/alexa/script.js', async (req, res) => {
     const bloqueioSolicitacao = listReturns[0][2]['texto'];
     const novaSolicitacao = listReturns[0][3]['texto'];
     const repeteSolicitacao = listReturns[0][4]['texto'];
-        
+    
     // testa se o cliente está ativo
     if (rows[0].length >= 1){ //existe device
         if (rows[0][0]['dvcBlq'] == 1){ // testa se o device está bloqueado

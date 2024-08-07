@@ -41,8 +41,11 @@ CREATE TABLE  `alexa`.`dvc` (
 
 CREATE TABLE  `alexa`.`grp` (
   `id` INT AUTO_INCREMENT,
+  `cliente` INT NOT NULL,
   `grupo` varchar(30) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`,`cliente`),
+  KEY `dvc_fk_1` (`cliente`),
+  CONSTRAINT `dvc_fk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE  `alexa`.`qry` (
