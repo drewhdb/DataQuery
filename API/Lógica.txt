@@ -1,0 +1,30 @@
+-- API É CHAMADA
+1. testar se o device inserido ao chamar a API existe e é válido
+	1.1 retornar que o device não foi declarado
+2. consultar os retornos
+3. testar se o Device existe na tabela DVC 
+	3.1 testar para cada cliente vinculado se ele está bloqueado.
+		3.1.1 se estiver bloqueado, incluir no log e ignorar cliente
+		3.1.2 se o device estiver bloqueado para todos os clientes, retornar mensagem que o Device está bloqueado para consultas
+	3.2 para cada cliente vinculado nesse Device
+		3.2.1 testar se o cliente está bloqueado. se estiver bloqueado, incluir no log e ignorar cliente
+		3.2.2 testar se a conexão com o banco de dados está funcionando. se estiver com falha, registrar no log e ignorar cliente
+		3.2.3 para cada grupo desse cliente
+			3.2.3.1 testar se o grupo está ativo. Se estiver inativo, ignorar grupo
+			3.2.3.2 para cada query do grupo
+				3.2.3.2.1 testar se o query está ativo. se não estiver ativo, ignorar query
+				3.2.3.2.2 se não existir queryes ativas ou cadastradas, igrnoar grupo
+			3.2.3.3 se não existir grupos ativos ou cadastrados, ignorar cliente
+	3.3 se não existir cliente com dados válidos, retornar que ocorreu falha de dados no cliente.
+	3.4 para cada cliente válido:
+		3.4.1 adicionar no texto principal o nome desse cliente.
+		3.4.2 para cada grupo desse cliente:
+			3.4.2.1 adicionar no texto principal o nome do grupo
+			3.4.2.2 para cada query desse grupo, consultar dados e adicionar no texto principal o nome e o valor da consulta
+	3.5 após fazer a consulta de dados de todos os clientes, retornar texto principal.
+4. caso não exista no DVC, testar se existe solicitação
+	4.1 testar se a solicitação existe
+		4.1.1 testar se a solicitação está bloqueada
+			4.1.1.1 se bloqueado, retornar texto de solicitação bloqueada
+		4.1.2 somar numeros de tentativas e retornar texto de aguardando solicitação
+	4.2	criar a solicitação

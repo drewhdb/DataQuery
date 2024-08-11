@@ -1,0 +1,5 @@
+#após a instalação do node.js
+
+npm express
+npm mysql2
+npm cors
