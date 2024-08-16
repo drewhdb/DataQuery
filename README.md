@@ -13,17 +13,16 @@ https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 analisar se a Alexa consegue escolher qual grupo ela deseja;
 
 **MELHORAR API**
-melhorar criação consts 
+solicitação bloqueada
 
-separar querycli e querydevice - 1 testa se o device está cadastrado e se está bloqueado.
-
-somente se a query estiver ativa
-
-testar caso não tenha registros
-
-1 device pode estar em mais de um cliente. cada cliente desse device terá um retorno.
+criar coluna descrição do querye - mudar no moqups
 
 se não tiver grupo  - criar cadastro sem grupo , e não o dizer quando for esse parametro.
+
+tratamento de erros - montar cenário conforme DeviceID e inserir na tabela LOGtestar caso não tenha registros
+
+testar bem outros cenários
+
 
 ----------------------------------
 ** DOCUMENTAÇÃO 

@@ -22,14 +22,14 @@ CREATE TABLE  `alexa`.`rtn` (
 insert into rtn values ('novaSolicitacao', 'Parece que é a primeira vez que você está executando a skill nesse aparelho. Vou enviar uma solicitação para a equipe Magnadata analisar seu aparelho.');
 insert into rtn values ('repeteSolicitacao', 'Este aparelho está aguardando resposta da solicitação. Se desejar, contate a Magnadata para pedir admissão.');
 insert into rtn values ('bloqueioSolicitacao', 'Sua solicitação para esse aparelho foi bloqueada pelos provedores da Skill.');
-insert into rtn values ('bloqueioCliente', 'Você está bloqueado para o uso dessa Skill. Qualquer dúvida contate a Magnadata para entender o que aconteceu.');
 insert into rtn values ('bloqueioDevice', 'Este aparelho está bloqueado para o uso dessa Skill.');
+insert into rtn values ('dadosInvalidos', 'Revise os dados de configuração e tente novamente mais tarde.');
 
 -- cliente, grupo de queryes do cliente e queryes do cliente
 CREATE TABLE  `alexa`.`cli` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente` varchar(20) NOT NULL,
-  `bloqueado` decimal(1,0) DEFAULT '0',
+  `bloqueado` tinyint DEFAULT '0',
   `user` varchar(10) DEFAULT NULL,
   `pass` varchar(30) DEFAULT NULL,
   `port` int(5) DEFAULT NULL,
@@ -41,6 +41,7 @@ CREATE TABLE  `alexa`.`grp` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente` int(11) NOT NULL DEFAULT '0',
   `grupo` varchar(30) NOT NULL,
+  `ativo` tinyint DEFAULT 1,
   PRIMARY KEY (`id`,`cliente`),
   KEY `dvc_fk_1` (`cliente`),
   CONSTRAINT `dvc_fk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`id`) ON DELETE CASCADE
@@ -51,6 +52,7 @@ CREATE TABLE  `alexa`.`qry` (
   `cliente` int(11) NOT NULL DEFAULT '0',
   `grupo` int(11) NOT NULL DEFAULT '0',
   `query` text NOT NULL,
+  `ativo` tinyint DEFAULT 1,
   PRIMARY KEY (`id`,`cliente`,`grupo`),
   KEY `qry_fk_cliente` (`cliente`),
   KEY `qry_fk_grupo` (`grupo`),
@@ -84,9 +86,9 @@ CREATE TABLE  `alexa`.`log` (
 
 insert into cli values (1, 'bebelândia', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
 insert into dvc values (1, 'teste', 'Celular Andrew', now(), 0);
-insert into dvc values (1, 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 1);
-insert into dvc values (1, 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 1);
-insert into grp values (1, 1, 'faturamento mensal'), (2, 1, 'faturamento diário');
+insert into dvc values (1, 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
+insert into dvc values (1, 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 0);
+insert into grp values (1, 1, 'faturamento mensal', 1), (2, 1, 'faturamento diário', 1);
 insert into qry (cliente, grupo, query) values (1, 1,'select FLOOR(value) as \'total vendido\' from bebelandia.pdv_valor_vendas;');
 insert into qry (cliente, grupo, query) values (1, 1, 'select FLOOR(value) as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
 insert into qry (cliente, grupo, query) values (1, 2, 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
@@ -94,9 +96,9 @@ insert into qry (cliente, grupo, query) values (1, 2, 'select value as \'total d
 
 insert into cli values (2, 'bebelândia loja', 0, 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
 insert into dvc values (2, 'teste', 'Celular Andrew', now(), 0);
-insert into dvc values (2, 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 1);
-insert into dvc values (2, 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 1);
-insert into grp values (1, 2, 'faturamento mensal'), (2, 2, 'faturamento diário');
+insert into dvc values (2, 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'Celular Andrew', now(), 0);
+insert into dvc values (2, 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Celular Andrew', now(), 0);
+insert into grp values (1, 2, 'faturamento mensal', 1), (2, 2, 'faturamento diário', 1);
 insert into qry (cliente, grupo, query) values (2, 1,'select FLOOR(value) as \'total vendido\' from bebelandia.pdv_valor_vendas;');
 insert into qry (cliente, grupo, query) values (2, 1, 'select FLOOR(value) as \'total de vendas\' from bebelandia.pdv_tot_vendas;');
 insert into qry (cliente, grupo, query) values (2, 2, 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;');
