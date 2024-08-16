@@ -13,6 +13,8 @@ https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 analisar se a Alexa consegue escolher qual grupo ela deseja;
 
 **MELHORAR API**
+quando não faturar falar outra coisa
+
 solicitação bloqueada
 
 criar coluna descrição do querye - mudar no moqups
