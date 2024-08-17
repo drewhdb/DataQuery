@@ -6,12 +6,49 @@
     <title>Testa API</title>
 </head>
 <body style="text-align: center; margin-top: 10em">
-    <p>Device: amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV</p>
-    <button id="callApiButton" style="width: 14rem; height: 14rem; border: 1px black solid; font-size: 4em;">Call API</button>
+    <button id="callApiButton1" style="width: 14rem; height: 14rem; border: 1px black solid; font-size: 2em;">Com erro</button>
+    <button id="callApiButton2" style="width: 14rem; height: 14rem; border: 1px black solid; font-size: 2em;">Bloqueado</button>
+    <button id="callApiButton3" style="width: 14rem; height: 14rem; border: 1px black solid; font-size: 2em;">Ativo</button>
 
     <script>
-        document.getElementById('callApiButton').addEventListener('click', function() {
-            const deviceId = 'amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV';
+        document.getElementById('callApiButton1').addEventListener('click', function() {
+            const deviceId = '_teste1';
+            const apiUrl = `http://192.168.0.62:89/alexa/script.js?deviceId=${deviceId}`;
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('GET', apiUrl, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.log(xhr.responseText);
+                    }
+                }
+            };
+            xhr.send();
+        });
+
+        document.getElementById('callApiButton2').addEventListener('click', function() {
+            const deviceId = '_teste2_amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3';
+            const apiUrl = `http://192.168.0.62:89/alexa/script.js?deviceId=${deviceId}`;
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('GET', apiUrl, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.log(xhr.responseText);
+                    }
+                }
+            };
+            xhr.send();
+        });
+
+        document.getElementById('callApiButton3').addEventListener('click', function() {
+            const deviceId = 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3';
             const apiUrl = `http://192.168.0.62:89/alexa/script.js?deviceId=${deviceId}`;
             const xhr = new XMLHttpRequest();
 

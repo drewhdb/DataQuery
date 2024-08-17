@@ -9,7 +9,7 @@ const cors = require('cors');
 app.use(cors());
 
 // CRIAÇÃO DAS VARIAVEIS
-let deviceId, connection, texto = '',
+let deviceId, connection, texto = '', bloqueio = 0,
 dadosInvalidos = '', bloqueioDevice = '', bloqueioSolicitacao = '', novaSolicitacao = '', repeteSolicitacao = '';
 
 // CONEXÃO COM O BANCO PRINCIPAL
@@ -46,15 +46,18 @@ app.get('/alexa/script.js', async (req, res) => {
     // Pegar dados vinculados a esse device
 	let queryDevice = 'SELECT * from dvc where deviceid = \'' + deviceId + '\';';	
     let clientes_do_device = await connection.execute(queryDevice);
-    clientes_do_device.pop();
-
+    clientes_do_device = clientes_do_device[0];
     
     // testar se o Device existe no DVC
-    if(clientes_do_device[0].length > 0){
-        log('chamado', 'Inicio do chamado. Iniciando validação', 1);
-        if (await consulta(clientes_do_device[0])){
-            console.log(texto);
+    if(clientes_do_device.length > 0){
+    	texto = '';
+        log('inicio', 'Inicio do chamado. Iniciando validação', 1);
+        if (await consulta(clientes_do_device)){
+            log('concluido','Chamado encerrado', 4);
             return res.status(200).send({'return' : texto});
+        } else if (bloqueio == clientes_do_device.length){
+            log('retorno','aparelho bloqueado para consultas.', 3);
+            return res.status(200).send({'return' : bloqueioDevice});
         } else {
             log('retorno','não foi encontrado nenhum cliente válido', 3);
             return res.status(200).send({'return' : dadosInvalidos});
@@ -66,7 +69,7 @@ app.get('/alexa/script.js', async (req, res) => {
 });
 
 async function consulta(clientes_do_device){
-    let bloqueio = 0, clientes = [];
+    let clientes = [];
     // para cada cliente
     for (let i = 0; i < clientes_do_device.length; i++) {
         let textoCliente = '';
@@ -78,6 +81,8 @@ async function consulta(clientes_do_device){
         // testa se bloqueado
         if(cliente['bloqueado'] == 1){
             log('consulta', 'cliente ' + cliente['cliente'] + ' bloqueado.', 2);
+        } else if(clientes_do_device[i]['bloqueado'] == 1){
+            log('consulta', 'o device está bloqueado para o cliente ' + cliente['cliente'] + '.', 2);
             bloqueio ++;
         } else {
            const dbCliente = {
@@ -150,10 +155,6 @@ async function consulta(clientes_do_device){
                 log('retorno', 'falha na conexão do banco de dados do cliente ' + cliente['cliente'], 3);
             }
         }
-    
-        if(bloqueio == clientes_do_device.length){
-            return res.status(200).send({'return' : bloqueioDevice});
-        }
     }
     // testa se possui cliente valido
     if (clientes.length > 0){
@@ -197,7 +198,7 @@ async function pegaRetornos() {
 }
 
 async function log(chave, texto, status) {
-	let query = 'INSERT INTO log (deviceId, horario, chave, texto, status) values (\'' + deviceId + '\', now(), \'' + chave + '\', \'' + texto + '\', \'' + status + '\');';
+	let query = 'INSERT INTO log (deviceId, horario, chave, texto, status) values (\'' + deviceId + '\', now(), upper(\'' + chave + '\'), \'' + texto + '\', \'' + status + '\');';
     await connection.execute(query);        
 }
 
@@ -210,7 +211,7 @@ async function consultaSolicitacao(res) {
     // testar se a solicitacao existe no SLC
     if(solicitacao[0].length > 0){
         // testa se a solicitação está bloqueado
-        if(false == true){
+        if(solicitacao[0][0]['bloqueado'] == 1){
             return res.status(200).send({'return' : bloqueioSolicitacao});
         } else {
             // soma tentativa
@@ -222,7 +223,6 @@ async function consultaSolicitacao(res) {
         // insere solicitação
         let insertSolicitacao = 'insert into slc values (\'' + deviceId + '\', \'nome\', now(), 0, 0);';	
         await connection.execute(insertSolicitacao);
-        console.log('não')
         return res.status(200).send({'return' : novaSolicitacao});
     }
 }

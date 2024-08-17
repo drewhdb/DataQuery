@@ -10,19 +10,22 @@ https://www.canva.com/design/DAGBsv26MYc/1_93cT9uQputTXvGIbSkCQ/edit
 https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 
 **MELHORAR SKILL**
-analisar se a Alexa consegue escolher qual grupo ela deseja;
+- escolher grupo;
+- escolher data;
+- dizer ajuda -> opções, como relatar problema, ensinar a usar, etc.
+- escolher grupo - Quando validado, retornar uma lista de clientes no Return
 
 **MELHORAR API**
-solicitação bloqueada
+- dizer que não há dados quando os valores das querye de um grupo estiver zerado 
+-> não há dados para ?{nome do grupo}
+- criar base Alexa nos clientes com as views já programadas
+- criar cadastro sem grupo , e não o dizer quando for esse parametro.
 
-criar coluna descrição do querye - mudar no moqups
-
-se não tiver grupo  - criar cadastro sem grupo , e não o dizer quando for esse parametro.
-
-tratamento de erros - montar cenário conforme DeviceID e inserir na tabela LOGtestar caso não tenha registros
-
-testar bem outros cenários
-
+**MELHORAR SITE**
+- revisar todas as colunas do banco
+- botão de copiar grupo para outro
+- botão de vincular solicitação ao cliente
+- log na tela de cliente
 
 ----------------------------------
 ** DOCUMENTAÇÃO 
