@@ -31,120 +31,93 @@ https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 ** DOCUMENTAÇÃO 
 **ETAPA 1 - PROJETO DE PESQUISA**
 
-1. IDENTIFICAÇÃO DO PROJETO
-Aluno integrante: Andrew Horn de Borba
-Título: DATAQUERY
+**1. IDENTIFICAÇÃO DO PROJETO**
 
-2. CONTEXTUALIZAÇÃO DO TEMA
-Fazer uma consulta em um banco de dados a partir de uma interação com a Alexa, com o intuito de relatar dados. Modelado em um cenário para lojistas, onde é de extrema importancia um dono de empresa saber como está o progresso de sua empresa. Pode ser usado para saber o faturamento diário e mensal, por exemplo, abrangindo diversas possibilidades onde o usuário possa controlar a partir de um site.
+1.1. Aluno integrante: Andrew Horn de Borba  
+1.2. Título: DATAQUERY
 
-3. PROBLEMA E JUSTIFICATIVA
-Entretanto, essa funcionalidade não é uma tarefa simples. Será necessário criar uma Skill na Alexa onde consulte uma API, que retorne e relate esses dados pela Alexa, por consequencia poderá ter várias brechas na segurança e no controle de clientes, precisando assim de um planejamento mais elaborado com controle por cliente e cada cliente tendo seu aparelho e consulta.
+**2. CONTEXTUALIZAÇÃO DO TEMA**
 
-O Fácil acesso á Alexa tornará extremamente prático para o dono saber a informação que quiser.
+O projeto DATAQUERY tem como objetivo criar um sistema para consultas rápidas e pré-definidas a partir de um único chamado, visando relatar dados de maneira prática e ágil. Este sistema será especialmente útil para lojistas, permitindo que o proprietário de uma empresa acompanhe o progresso de seu negócio de forma eficiente. O sistema possibilitará, por exemplo, a consulta de faturamento diário e mensal, total produzido e a produzir, ou o percentual de progresso de tarefas, entre outras métricas. Tudo isso será acessível por meio de um site, proporcionando ao usuário uma visão clara e atualizada das informações necessárias para a gestão eficaz de seu negócio.
 
-5. OBJETIVOS
-Relatar a partir de consultas de DB que o usuário programar para dizer, agrupando os dados em categorias e controlando qual Alexa pode falar os dados, controlando assim o uso do cliente.
+**3. PROBLEMA E JUSTIFICATIVA**
 
-6. HIPÓTESE (PROPOSTA DO PROJETO)
-1- Fazer um site responsivo e intuitivo, para o usuário organizar as informações de cada cliente;
-Dados dos clientes baseado em CRUD com cliente X DEVICE - QUERY.
-O Usuário poder ditar quais consultas, quais retornos de 'problemas' e quais Devices podem acessar a Skill.
+A implementação da funcionalidade proposta apresenta desafios significativos, principalmente devido à necessidade de criar uma API que se conecte a vários bancos de dados e retorne dados de maneira segura e eficiente. Esse processo é complexo e envolve questões de segurança e controle de acesso, já que o sistema deve garantir que as informações sejam protegidas e acessíveis apenas aos usuários autorizados. Além disso, será necessário um planejamento detalhado para gerenciar o acesso individualizado por cliente, garantindo que cada um tenha seu próprio dispositivo e consultas personalizadas. A solução precisa lidar com a variedade de dados e consultas de forma robusta e segura, garantindo a integridade e confidencialidade das informações.
 
-2- Fazer uma Skill da Alexa;
-Essa Skill poderá ser baixada por qualquer um, e o controle ficará a partir do mesmo banco de dados que o site;
-A Skill fará validação de cliente, caso exista e não esteja bloqueado, retornará uma frase com os dados já prontos;
-Os dados serão retornados a partir de uma API;
+**4. OBJETIVOS**
 
-3- fazer uma APi que retonre uma frase pronta com os dados já prontos;
-Consultar as informações do cliente e acessar um banco de dados externos para pegar os dados da consulta;
-Pode ter N consultas e serão agrupadas por uma categoria de queryes;
+4.1. Permitir que o usuário configure consultas de banco de dados (DB) para gerar relatórios categorizados.  
+4.2. Controlar quais dispositivos podem acessar e processar as consultas.  
+4.3. Gerenciar o uso da aplicação por diferentes funcionários e setores da empresa.
+
+**5. HIPÓTESE (PROPOSTA DO PROJETO)**
+
+5.1. Desenvolver um site responsivo e intuitivo para facilitar a organização das informações de cada cliente.  
+5.2. Implementar um sistema de CRUD (Create, Read, Update, Delete) para gerenciar dados de clientes e dispositivos (CLIENTE X DEVICE - QUERY) em um banco de dados MySQL.  
+5.3. Permitir que o usuário defina quais consultas serão realizadas, quais problemas serão reportados e quais dispositivos terão acesso às habilidades do sistema.  
+5.4. Criar uma API que retorne respostas pré-formatadas com os dados consultados.  
+5.5. A API deve consultar informações do cliente e acessar bancos de dados externos para recuperar dados relevantes.  
+5.6. Suportar múltiplas consultas, que serão agrupadas por categorias específicas de consultas.
 
 **ETAPA 2 - PLANEJAMENTO**
 
-2. RESULTADOS ESPERADOS
-- Principais funcionalidades esperadas para o sistema:
-CRUD de clientes com registro de dados de banco de dados externo, consultas e aparelhos;
-Edição de textos de retornos de frases da Alexa caso a validação não esteja ok;
-Criação da Skill da Alexa;
-Criação da API para consulta de dados do cliente;
+**1. RESULTADOS ESPERADOS**
 
-- Impacto esperado:
-Usuários da Alexa usarem para saber informações conforme o banco de dados deles, exemplo para saber sobre lucros e dividas, progressos de projetos e etc;
+1.1. Principais Funcionalidades do Sistema:
 
-3. DEFINIÇÃO DA ARQUITETURA
-Itens que poderão ser contemplados nesta seção:
-- Apresentação das partes do sistema, possíveis integrações com aplicações, localização e contextualização do sistema dentro do ambiente já existente
-    moqups
-    Canva
-    Alexa Skill Kit da Amazon
-- Descrição das tecnologias a serem utilizadas:
-    sistema web em php e API em node.js, além de ALEXA SKILLS KIT da própria
-- Linguagens de programação
-    HTML, CSS e PHP; JS (Node.js) para a API
-- Banco de dados
-    Mysql 5.5
-- IDEs para o desenvolvimento
-    Mysql Query Browser, VS Code;
+Implementação de um módulo CRUD para gerenciamento de clientes, que inclui a criação, leitura, atualização e exclusão de registros de dados relacionados a bancos de dados externos, consultas realizadas e dispositivos utilizados.
+Desenvolvimento de uma API para permitir consultas aos dados dos clientes e retorno das informações de maneira formatada.
 
-4. ESPECIFICAÇÕES E MODELAGEM DO SOFTWARE
-Itens que poderão ser contemplados nesta seção:
-- Requisitos do sistema (funcionais, não funcionais e de sistema)
-    Permitir que os usuários cadastrem, editem, bloqueiem e excluam clientes e seus dados;
-    O sistema deve ser compatível com os navegadores mais recentes, acessível em qualquer lugar, seguro para guardar informações importantes
-    O sistema deve ser leve e ter curto tempo de resposta, além de prático.
-    A Alexa deverá dizer detalhadamente os dados necessários;
-    A API deve ser segura e suportar todas as conexões com o BD
+1.2. Impacto Esperado:
+Facilitar o acompanhamento do progresso das empresas, proporcionando uma visão clara e atualizada das métricas de desempenho através de um sistema acessível e eficiente.
+Criação de uma skill para Alexa que integrará com a API, permitindo consultas por meio de comandos de voz e simulando operações de uma empresa, o que melhorará a acessibilidade e a interação com o sistema.
 
-- Diagrama de casos de uso
-    canva
+**2. DEFINIÇÃO DA ARQUITETURA**
 
-- Prototipação das interfaces do sistema
-    Moqups
-     
-- Diagrama das tabelas do banco de dados
-    Workbench
+2.1. Partes do Sistema e Integrações:
 
-- Backlog com as funcionalidades a serem desenvolvidas
-    Farei pelo Github mesmo.
-  
-5. ATIVIDADES E CRONOGRAMA
+Sistema Web: Interface principal para acesso e gerenciamento dos dados dos clientes.
+API: Desenvolvida em Node.js, será responsável por consultar dados dos clientes, integrando-se com bancos de dados externos e retornando as informações necessárias de maneira segura e eficiente.
+Banco de Dados: Utilização de MySQL 5.5 para o armazenamento e gerenciamento das informações.
 
+2.2. Tecnologias e Ferramentas:
+Sistema Web: Desenvolvimento em PHP para garantir compatibilidade e funcionalidades robustas.
+API: Implementada em Node.js para suportar múltiplas consultas e retornos de dados.
+Banco de Dados: MySQL 5.5 para o gerenciamento e armazenamento de dados.
 
-Ago.
+2.3. Linguagens de Programação:
+Frontend: HTML, CSS, PHP
+Backend: JavaScript (Node.js)
 
-Ver melhorias - anotar o que não será feito nessa versão;
+IDEs e Ferramentas:
+Banco de Dados: MySQL Query Browser para gerenciamento de banco de dados.
+Desenvolvimento: VS Code para programação e desenvolvimento.
+Diagrama de Casos de Uso: Criado com Canva para visualizar as interações dos usuários com o sistema.
+Prototipação de Interfaces: Utilização de Moqups para criar protótipos interativos e visuais do sistema.
+Diagrama das Tabelas do Banco de Dados: Modelagem das tabelas com MySQL Workbench.
+Backlog: Gerenciado através do GitHub para rastreamento e gerenciamento das funcionalidades a serem desenvolvidas.
 
-atualizar moqups conforme melhorias;
+**3. ESPECIFICAÇÕES E MODELAGEM DO SOFTWARE**
 
-Fluxogramas de funcionamento;
+3.1. Requisitos Funcionais:
 
-Set. 
+O sistema deve permitir a criação, edição, bloqueio e exclusão de registros de clientes e seus dados associados.
+A aplicação web deve ser compatível com os navegadores mais recentes e acessível de qualquer local, com segurança para proteção das informações sensíveis.
+Implementação de mensagens de erro claras e precisas para situações em que a API não valide corretamente os dados dos clientes.
 
-Site;
+3.2. Requisitos Não Funcionais:
 
-API;
+Desenvolvimento de uma skill para Alexa que permitirá consultas à API por meio de comandos de voz, simulando operações empresariais.
+Implementação de um sistema de logs para monitorar e revisar erros e atividades do sistema.
+Criação de um painel para visualização de métricas, incluindo total de chamados, número de clientes e erros ocorridos no dia.
 
-Out. 
+3.3. Requisitos de Sistema:
 
-Termos de uso;
-
-Lançar Skill para produção;
-
-Nov. 
-
-artigo TCC;
-
-apresentação TCC;
-
-Dez. 
-
-Entrega do artigo científico 
-
-apresentação final do projeto
+O site deve ser acessível exclusivamente pelas empresas autorizadas, como empresas de sistemas de vendas ou de controle financeiro.
+Garantir que o site esteja sempre disponível e operacional para os usuários autorizados.
 
 ----------------------------------
-**REFERENCIAS
+**REFERENCIAS**
 Realizar a formatação das referências utilizando a norma NBR 6023. 
 Sugestão: utilizar ferramenta MORE para geração automática das referências: https://more.ufsc.br/
 
