@@ -75,14 +75,16 @@ CREATE TABLE  `alexa`.`dvc` (
 
 CREATE TABLE  `alexa`.`log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente` int(11) NOT NULL,
   `deviceid` varchar(300) NOT NULL,
   `chave` text NOT NULL,
   `texto` text,
   `horario` datetime,
   `status` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`deviceid`),
-  KEY `log_fk_1` (`deviceid`),
-  CONSTRAINT `log_fk_1` FOREIGN KEY (`deviceid`) REFERENCES `dvc` (`deviceid`)
+  PRIMARY KEY (`id`,`deviceid`, `cliente`),
+  KEY `log_fk_1` (`deviceid`, `cliente`),
+  CONSTRAINT `log_fk_1` FOREIGN KEY (`deviceid`) REFERENCES `dvc` (`deviceid`),
+  CONSTRAINT `log_fk_2` FOREIGN KEY (`cliente`) REFERENCES `cli` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='status: 1 - inicio. 2 - alerta. 3 - erro. 4 - retorno.';
 
 -- cliente bebelandia
