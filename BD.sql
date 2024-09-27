@@ -1,9 +1,9 @@
-drop database if exists alexa;
-create database alexa;
-use alexa;
+drop database if exists dataquery;
+create database dataquery;
+use dataquery;
 
 -- solicitação de uso da skill, conforme aparelho
-CREATE TABLE  `alexa`.`slc` (
+CREATE TABLE  `dataquery`.`slc` (
   `deviceid` varchar(300) NOT NULL,
   `nome` varchar(20) DEFAULT NULL,
   `data_solicitacao` datetime,
@@ -13,7 +13,7 @@ CREATE TABLE  `alexa`.`slc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- mensagens de retorno
-CREATE TABLE  `alexa`.`rtn` (
+CREATE TABLE  `dataquery`.`rtn` (
   `chave` varchar(30) NOT NULL,
   `texto` text NOT NULL,
   PRIMARY KEY (`chave`)
@@ -26,7 +26,7 @@ insert into rtn values ('bloqueioDevice', 'Este aparelho está bloqueado para o 
 insert into rtn values ('dadosInvalidos', 'Revise os dados de configuração e tente novamente mais tarde.');
 
 -- cliente, grupo de queryes do cliente e queryes do cliente
-CREATE TABLE  `alexa`.`cli` (
+CREATE TABLE  `dataquery`.`cli` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente` varchar(20) NOT NULL,
   `bloqueado` tinyint DEFAULT '0',
@@ -37,7 +37,7 @@ CREATE TABLE  `alexa`.`cli` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE  `alexa`.`grp` (
+CREATE TABLE  `dataquery`.`grp` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente` int(11) NOT NULL DEFAULT '0',
   `grupo` varchar(30) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE  `alexa`.`grp` (
   CONSTRAINT `dvc_fk_1` FOREIGN KEY (`cliente`) REFERENCES `cli` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE  `alexa`.`qry` (
+CREATE TABLE  `dataquery`.`qry` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente` int(11) NOT NULL DEFAULT '0',
   `grupo` int(11) NOT NULL DEFAULT '0',
@@ -62,7 +62,7 @@ CREATE TABLE  `alexa`.`qry` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- device dos clientes, log dos devices
-CREATE TABLE  `alexa`.`dvc` (
+CREATE TABLE  `dataquery`.`dvc` (
   `cliente` int(11) NOT NULL,
   `deviceid` varchar(300) NOT NULL,
   `descricao` varchar(100) DEFAULT '',
@@ -73,7 +73,7 @@ CREATE TABLE  `alexa`.`dvc` (
   CONSTRAINT `dvc_fk_cliente` FOREIGN KEY (`cliente`) REFERENCES `cli` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE  `alexa`.`log` (
+CREATE TABLE  `dataquery`.`log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente` int(11) NOT NULL,
   `deviceid` varchar(300) NOT NULL,
