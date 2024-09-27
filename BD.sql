@@ -1,3 +1,7 @@
+/* create user 'dataquery'@'%' identified by 'D4t4Qu3rY!!';
+grant all privileges on dataquery.* to 'dataquery'@'%';
+FLUSH PRIVILEGES; */
+
 drop database if exists dataquery;
 create database dataquery;
 use dataquery;
