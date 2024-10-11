@@ -1,30 +1,28 @@
-const http = require('http');
+const port = process.env.PORT || 85;
+
 const express = require('express');
 const app = express();
-const port = 89;
+app.use(express.json());
 
 const mysql = require('mysql2/promise');
 
-const cors = require('cors');
-app.use(cors());
-
-// CRIAÇÃO DAS VARIAVEIS
 let deviceId, connection, texto = '', bloqueio = 0,
 dadosInvalidos = '', bloqueioDevice = '', bloqueioSolicitacao = '', novaSolicitacao = '', repeteSolicitacao = '';
 
-// CONEXÃO COM O BANCO PRINCIPAL
 const dbConfig = {
-    host: '187.0.7.139',
-    user: 'alexa',
-    password: 'Al3x4!!',
+    host: '192.168.1.13',
+    user: 'dataquery',
+    password: 'D4t4Qu3rY!!',
     port: '3306',
-    database: 'alexa'
+    database: 'dataquery'
 };
 
-app.get('/alexa/script.js', async (req, res) => {
+// principal
+app.get('/', async (req, res) => {
+	
     /* -- VALIDAÇÃO DO DEVICE ID -- */
     deviceId = req.query.deviceId;
-    if (!deviceId || deviceId.length < 200) {
+    if (!deviceId || deviceId.length < 50) {
         return res.status(200).send({'return' : 'Parâmetro deviceId é necessário.'});
     }
 
@@ -78,6 +76,7 @@ async function consulta(clientes_do_device){
         let cliente = await connection.execute(queryCliente);
         cliente = cliente[0][0];
         
+
         // testa se bloqueado
         if(cliente['bloqueado'] == 1){
             log('consulta', 'cliente ' + cliente['cliente'] + ' bloqueado.', 2);
@@ -90,15 +89,16 @@ async function consulta(clientes_do_device){
                 user: cliente['user'],
                 password: cliente['pass'],
                 port: cliente['port']
-            }            
+            }
+        
             let conexao = 1;
             try{
                 connectionCliente = await mysql.createConnection(dbCliente);
             } catch (error) {
-                console.log('Erro ao se conectar ao banco de dados do cliente ' + clientes[i]['cliente'] + ": " + error);
-                log('falha na conexão', 'cliente ' + cliente['cliente'] + ' sem acesso ao banco de dados.', 2);
+                log('falha na conexão', 'cliente ' + clientes[i]['cliente'] + ' sem acesso ao banco de dados.', 2);
                 conexao = 0;
             }
+		
             if (conexao == 1){
                 let queryGrupos = 'Select * from grp where grp.cliente = \'' + clientes_do_device[i]['cliente'] + '\';'; 
                 let grupos_do_cliente = await connection.execute(queryGrupos);
@@ -227,6 +227,7 @@ async function consultaSolicitacao(res) {
     }
 }
 
-http.createServer(app).listen(port, () => {
-    console.log(`Server running at port ${port}`);
+// Iniciar o servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
 });
