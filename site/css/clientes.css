@@ -5,9 +5,37 @@ container {
 }
 
 .cliente {
-    width: 100%;
+    width: auto;
     padding: 1em;
     border: solid 1px black;
     background-color: rgb(247, 247, 247);
     margin-bottom: 0.5em;
 }
+
+.block {
+    text-align: center;
+    width: auto;
+    height: auto;
+    border: 1px black solid;
+    margin: 1em 5%;
+}
+
+.block-head {
+    margin: 1em 0;
+}
+
+.block .input-content {
+    width: 80%;
+}
+
+.add {
+    text-align: right;
+    margin: -2em 1em 0 0;
+}
+
+@media only screen and (max-width: 750px) {
+    .container {
+        justify-content: center;
+    }
+}
+

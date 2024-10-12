@@ -1,0 +1,31 @@
+dashboard {
+    background: linear-gradient(to left, #e7724e, #ffc355);
+    color: #000; 
+    border-radius: 10px 25px 0 25px;
+    font-size: 24px;
+    margin: 0 1em;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 4em;
+    width: 12em;
+    display: inline-block;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@media only screen and (max-width: 1100px) {
+    dashboard {
+        width: 500px;
+        margin: 1em 1em 1em 1em;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    dashboard {
+        width: 90%;
+        margin: 1em 1em 1em 1em;
+        display: block;
+    }
+}

@@ -1,0 +1,20 @@
+container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+container a {
+    background-color: rgba(220, 220, 220, 0.5);
+    border: 1px rgba(100, 100, 100, 1) solid;
+    height: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0;
+    width: calc(100% - 10%);
+    margin-left: 5%;
+    margin-right: 5%;
+    box-sizing: border-box;    
+}

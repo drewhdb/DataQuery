@@ -16,23 +16,19 @@
     <div class="container">
         <div class="login">
         <form action="./login.php" method="post">
-                <h1>Login</h1>
+            <img src="http://localhost/DataQuery/site/imagem/logo_branco.png">
+            
+            <label for="user">usuario</label>
+            <input type="text" id="user" name="user" required>
 
-                <label for="user">usuario</label>
-                <input type="text" id="user" name="user" required>
+            <label for="pass">senha</label>
+            <input type="password" id="pass" name="pass" required>
 
-                <label for="pass">senha</label>
-                <input type="password" id="pass" name="pass" required>
-
-                <input type="submit" class="submit" value="Entrar">
-                <?php 
-                    if($_GET != []){
-                ?>
+            <input type="submit" class="submit" value="Entrar">
+            <?php if($_GET != []){ ?>
                 <p class="aviso"><?= $_GET['aviso']?></p>
-                <?php
-                    };
-                ?>
-            </form>
+            <?php }; ?>
+        </form>
         </div>
     </div>
 </body>

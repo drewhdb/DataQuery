@@ -7,14 +7,17 @@
         header("Location: index.php");
     }
 
-    $clientes = getClientes();
+    $totalClientes = getDashboardClientes();
+    $totalChamados = getDashboardChamados();
+    $totalFalhas = getDashboardErros();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>Alexa</title>
+    <title>DataQuery</title>
     <?php include_once "./padroes/head.html"; ?>
     <link rel="stylesheet" href="./css/clientes.css">
+    <link rel="stylesheet" href="./css/home.css">
 </head>
 <body>
     <?php include_once "./padroes/menu.html"; ?>
@@ -22,16 +25,11 @@
     <div class="content-wrap">
         <header>
             <ion-icon class="expand" name="menu" id="open-button"></ion-icon>
-            <div>
-                <a href="./alexa/insert.php" title="ADICIONAR CLIENTE"><ion-icon class="icon40" name="person-add"></ion-icon></a>
-            </div>
         </header>
         <container>
-            <?php foreach ($clientes as $cliente) { ?>
-            <a href="./alexa/edit.php?cliente=<?=$cliente['cliente']?>" title="CLIENTE"><div class="cliente" <?php if($cliente['bloqueado'] == 1) {?> style="background-color: tomato;" <?php }; ?>>
-                <?= $cliente['cliente']; ?>
-            </div><a>
-            <?php }; ?>
+            <dashboard>Total de clientes: <?= $totalClientes ?> </dashboard>
+            <dashboard>chamados: <?= $totalChamados ?> </dashboard>
+            <dashboard>chamados falhos: <?= $totalFalhas ?> </dashboard>
         </container>
     </div>
 

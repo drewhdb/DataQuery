@@ -1,0 +1,114 @@
+header{
+    min-height: 6em;
+    padding: 1em;
+
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: space-between;
+    background-color: rgb(224, 224, 224, 0.5);
+}
+
+/* Menu */
+.menu-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: start;
+
+    height: 100%; 
+    width: 20%;
+    min-width: 250px;
+    padding: 1em 1.5em 0;
+    color: #fff;
+
+    background: #000000;
+    overflow-y: auto; 
+
+    transform: translate3d(-120%,0,0);
+    transition: transform 0.4s cubic-bezier(0.7,0,0.3,1);
+}
+
+.show-menu .menu-wrap {
+    transform: translate3d(0,0,0);
+    transition: transform 0.8s cubic-bezier(0.7,0,0.3,1);
+}
+
+.menu-wrap ion-icon{
+    color: #fff;
+}
+
+.menu-wrap::-webkit-scrollbar {
+    width: 12px;
+}
+.menu-wrap::-webkit-scrollbar-thumb {
+    background-color: #545252;
+}
+.menu-wrap::-webkit-scrollbar-track {
+    background-color: #000;
+}
+
+/* head */
+.menu-head {
+    width: 100%;  
+    text-align: center;
+}
+
+/* body */
+.menu-block {
+    display: block;
+    margin-top: 1em;
+}
+
+.logo {
+    width: 12em;
+    height: auto;
+    text-align: center;
+}
+
+.link {
+    transition: 1s ease-in;
+    text-align: left;
+    padding-left: 0.3em;
+    color: #fff;
+    display: block;
+    font-size: 20px;
+    margin-bottom: 1em;
+    width: 12em;
+    height: 2em;
+    box-shadow: 10px 10px 20px rgba(50, 50, 50, 0.3); 
+}
+
+.link:hover {
+    box-shadow: 10px 10px 20px rgba(200, 200, 200, 0.3); 
+    transition: 1s ease;
+}
+
+/* Menu Button */
+.close {
+    color: #B39246;
+    position: absolute;
+    right: 0.5em;
+    cursor: pointer;
+    top: 0.5em;
+    transition: all 1s;
+}
+
+.expand {
+    transition: all 1s;
+    font-size: 50px;
+    color: #B39246;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 750px) {
+    header {
+        grid-template-columns: 30% 30%;
+        gap: 2%;
+    }
+}

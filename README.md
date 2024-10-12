@@ -13,7 +13,9 @@ https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 - escolher grupo;
 - escolher data;
 - dizer ajuda -> opções, como relatar problema, ensinar a usar, etc.
-- escolher grupo - Quando validado, retornar uma lista de clientes no Return
+- retornar uma lista de clientes no Return
+https://developer.amazon.com/en-US/blogs/alexa/alexa-skills-kit/2023/02/certification-requirements-privacy-urls-feb-2023
+
 
 **MELHORAR API**
 - dizer que não há dados quando os valores das querye de um grupo estiver zerado 
@@ -108,40 +110,6 @@ Itens que poderão ser contemplados nesta seção:
 - Backlog com as funcionalidades a serem desenvolvidas
     Farei pelo Github mesmo.
   
-5. ATIVIDADES E CRONOGRAMA
-
-
-Ago.
-
-Ver melhorias - anotar o que não será feito nessa versão;
-
-atualizar moqups conforme melhorias;
-
-Fluxogramas de funcionamento;
-
-Set. 
-
-Site;
-
-API;
-
-Out. 
-
-Termos de uso;
-
-Lançar Skill para produção;
-
-Nov. 
-
-artigo TCC;
-
-apresentação TCC;
-
-Dez. 
-
-Entrega do artigo científico 
-
-apresentação final do projeto
 
 ----------------------------------
 **REFERENCIAS

@@ -16,6 +16,7 @@ body {
 
 img {
     border: 0;
+    text-align: center;
 }
 
 *, *:after, *:before { -webkit-box-sizing: border-box; box-sizing: border-box; }
@@ -48,14 +49,6 @@ form{
     backdrop-filter: blur(15px);
     background: #FFFFFF;
     border-radius: 20px;
-}
-
-.img{
-    text-align: center;
-}
-
-img{
-    filter: drop-shadow(10px 10px 30px goldenrod);
 }
 
 h1{

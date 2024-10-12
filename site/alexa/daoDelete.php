@@ -3,9 +3,9 @@
 
     $conexao = criaConexaoAlexa();
 
-    $sql = "DELETE FROM cli WHERE cliente = '$_GET[cliente]';";
+    $sql = "DELETE FROM cli WHERE id = '$_GET[id]';";
     $statement = $conexao->prepare($sql);
     $statement->execute();
 
-    header("Location: ../home.php");
+    header("Location: ../clientes.php");
 ?>

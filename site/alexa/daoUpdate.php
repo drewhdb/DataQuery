@@ -9,9 +9,9 @@
     $conexao = criaConexaoAlexa();
     $conexao->exec("set names utf8mb4");
 
-    $sql = "UPDATE cli SET cliente = '$_GET[cliente]', bloqueado = '$bloqueado', user = '$_GET[user]', pass = '$_GET[pass]', port = '$_GET[port]', host = '$_GET[host]' WHERE id = '$_GET[id]';";
+    $sql = "UPDATE cli SET bloqueado = '$bloqueado', cliente = '$_GET[cliente]', user = '$_GET[user]', pass = '$_GET[pass]', port = '$_GET[port]', host = '$_GET[host]' WHERE id = '$_GET[id]';";
     $statement = $conexao->prepare($sql);
     $statement->execute();
 
-    header("Location: ../home.php");
+    header("Location: ../clientes.php");
 ?>
