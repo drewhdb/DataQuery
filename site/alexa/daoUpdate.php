@@ -13,5 +13,5 @@
     $statement = $conexao->prepare($sql);
     $statement->execute();
 
-    header("Location: ../clientes.php");
+    header("Location: ./edit.php?id=".$_GET['id']);
 ?>

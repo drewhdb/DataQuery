@@ -67,13 +67,15 @@ CREATE TABLE  `dataquery`.`qry` (
 
 -- device dos clientes, log dos devices
 CREATE TABLE  `dataquery`.`dvc` (
+  `id` int(11) NOT NULL auto_increment,
   `cliente` int(11) NOT NULL,
   `deviceid` varchar(300) NOT NULL,
   `descricao` varchar(100) DEFAULT '',
   `data_criacao` datetime,
   `bloqueado` decimal(1,0) DEFAULT '0',
-  PRIMARY KEY (`deviceid`,`cliente`),
+  PRIMARY KEY (`deviceid`,`cliente`,`id`),
   KEY `dvc_fk_cliente` (`cliente`),
+  KEY `dvc_id` (`id`),
   CONSTRAINT `dvc_fk_cliente` FOREIGN KEY (`cliente`) REFERENCES `cli` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -86,34 +88,16 @@ CREATE TABLE  `dataquery`.`log` (
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`,`deviceid`),
   KEY `log_fk_1` (`deviceid`),
-  CONSTRAINT `log_fk_1` FOREIGN KEY (`deviceid`) REFERENCES `dvc` (`deviceid`)
+  CONSTRAINT `log_fk_1` FOREIGN KEY (`deviceid`) REFERENCES `dvc` (`deviceid`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='status: 1 - inicio. 2 - alerta. 3 - erro. 4 - retorno.';
 
 
 -- cliente bebelandia
-insert into cli values (1, 'teste', 1, 'root', 'j4c4r3z40!', 3306, '192.168.1.13');
+insert into cli values (1, 'teste', 1, 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
 insert into grp values (1, 1, 'faturamento diário', 1);
-insert into qry (cliente, grupo, query, descricao) values (1, 1,'select FLOOR(value) as \'total vendido\' from bebelandia.pdv_valor_vendas;', 'total vendido');
-insert into qry (cliente, grupo, query, descricao) values (1, 1, 'select FLOOR(value) as \'total de vendas\' from bebelandia.pdv_tot_vendas;', 'total de vendas');
-insert into qry (cliente, grupo, query, descricao) values (1, 1, 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;', 'novos clientes');
-insert into qry (cliente, grupo, query, descricao) values (1, 1, 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;', 'total de peças vendidas');
+insert into qry (cliente, grupo, query, descricao) values (1, 1,'select FLOOR(if(value is null, 0, value)) as \'total vendido\' from bebelandia.pdv_valor_vendas;', 'total vendido');
+insert into qry (cliente, grupo, query, descricao) values (1, 1, 'select if(value is null, 0, value) as \'total de vendas\' from bebelandia.pdv_tot_vendas;', 'total de vendas');
+insert into qry (cliente, grupo, query, descricao) values (1, 1, 'select if(value is null, 0, value) as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;', 'novos clientes');
+insert into qry (cliente, grupo, query, descricao) values (1, 1, 'select if(value is null, 0, value) as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;', 'total de peças vendidas');
 
-insert into dvc values (1, '_teste1', 'Device com erro', now(), 0);
-insert into dvc values (1, '_teste2_amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'device bloqueado', now(), 1);
-insert into dvc values (1, 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Alexa Andrew', now(), 0);
-
-
-/*
--- cliente loja
-insert into cli values (2, 'loja', 1, 'root', 'j4c4r3z40!', 3306, '187.0.7.139');
-insert into grp values (1, 2, 'faturamento mensal', 1);
-insert into grp values (2, 2, 'faturamento diário', 1);
-insert into qry (cliente, grupo, query, descricao) values (2, 1,'select FLOOR(value) as \'total vendido\' from bebelandia.pdv_valor_vendas;', 'total vendido');
-insert into qry (cliente, grupo, query, descricao) values (2, 1, 'select FLOOR(value) as \'total de vendas\' from bebelandia.pdv_tot_vendas;', 'total de vendas');
-insert into qry (cliente, grupo, query, descricao) values (2, 2, 'select value as \'novos clientes\' from bebelandia.pdv_qtde_vendas_novos_clientes;', 'novos clientes');
-insert into qry (cliente, grupo, query, descricao) values (2, 2, 'select value as \'total de peças vendidos\' from bebelandia.pdv_tot_qtde_vendas;', 'total de peças vendidas');
-
-insert into dvc values (2, '_teste1', 'Device com erro', now(), 0);
-insert into dvc values (2, '_teste2_amzn1.ask.device.AMARFMWRHFYMHA7FNXXV7DK5INXLGKPQHGGWBUAH27PDHQY6SATI4XZPT7NE65BRWR3TEDS5EG7HAJAYQYG5SC6XIHUVTWAGTHSNJRGVQESDUROUJ23ILBV7WR3N4SZ7X7V7FLEMSR5VXPQX3TVMAJY52C2ZI3EKTJVV4D3OIAQBK4VINFLZPVES7NWZQYKM34FQI7OP5BRLLDAV', 'device bloqueado', now(), 1);
-insert into dvc values (2, 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Alexa Andrew', now(), 0);
-*/
+insert into dvc values (1,1, 'amzn1.ask.device.AMAQRJT7SGBHDBYW3EQSJ5NPO52UKCC5AJV6SSJLZ3FCALG6OZOPDZEIOFIJP7TWFMX5OSWK4WZOA2ZPR2AXXB2E67S4VUP25T33ECQNZGAG56NJ3UAXMALQ6JNKX7AWYWLMJX63T6HK6OWZ35OZJ4TQ7UUUQJXLL6GVBSXOP5CLCOFF3ZCVAIOPMDMSUL2YHLCC4SEY4SBL6ZG3', 'Alexa Andrew', now(), 0);

@@ -3,9 +3,9 @@
 
     $conexao = criaConexaoAlexa();
 
-    $sql = "DELETE FROM dvc WHERE deviceid = '$_GET[device]';";
+    $sql = "DELETE FROM grp WHERE id = '$_GET[id]' and cliente = '$_GET[cliente]';";
     $statement = $conexao->prepare($sql);
     $statement->execute();
 
-    header("Location: ./edit.php?cliente=$_GET[cliente]");
+    header("Location: ../alexa/edit.php?id=".$_GET['cliente']);
 ?>

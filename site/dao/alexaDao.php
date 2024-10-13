@@ -12,6 +12,17 @@ function getClientes(){
     return $statement->fetchAll(PDO::FETCH_ASSOC);    
 }
 
+function getCliente($id){
+    $conexao = criaConexaoAlexa();
+    $conexao->exec("set names utf8mb4");
+
+    $sql = "SELECT * FROM cli WHERE cli.id = '$id';";
+    $statement = $conexao->prepare($sql);
+    $statement->execute();
+    
+    return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
 function getDevicesClientes($cliente){
     $conexao = criaConexaoAlexa();
     $conexao->exec("set names utf8mb4");
@@ -34,27 +45,28 @@ function getGruposClientes($cliente){
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getQueryesClientes($cliente, $grupo){
+function getGrupoById($id, $cliente){
     $conexao = criaConexaoAlexa();
     $conexao->exec("set names utf8mb4");
 
-    $sql = "SELECT qry.* FROM qry where qry.cliente = '$cliente' and qry.grupo '$grupo';";
+    $sql = "SELECT * FROM grp where id =  '$id' and cliente = '$cliente';";
     $statement = $conexao->prepare($sql);
     $statement->execute();
     
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getCliente($id){
+function getQueryes($grupo,$cliente){
     $conexao = criaConexaoAlexa();
     $conexao->exec("set names utf8mb4");
 
-    $sql = "SELECT * FROM cli WHERE cli.id = '$id';";
+    $sql = "SELECT qry.* FROM qry where qry.cliente = '$cliente' and qry.grupo = '$grupo';";
     $statement = $conexao->prepare($sql);
     $statement->execute();
     
-    return $statement->fetch(PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function getDashboardClientes(){
     $conexao = criaConexaoAlexa();

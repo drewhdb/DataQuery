@@ -1,4 +1,4 @@
-<?php
+<?php //print_r($_GET); die();
     include_once "../verifica_sessao.php";
     include_once "../dao/alexaDao.php";
     $dados = getCliente($_GET['id']);
@@ -53,15 +53,17 @@
 
     <div class="block">
         <div class="block-head">
-            <p style="text-align: center;">DEVICES</p>
+            <p style="text-align: center;">APARELHOS</p>
             <div class="add">
-                <a href="./alexa/insert.php" title="ADICIONAR GRUPO" ><ion-icon class="icon50" name="add"></ion-icon></a>
+                <a href="../devices/insert.php" title="ADICIONAR APARELHO JÁ CADASTRADO" ><ion-icon class="icon50" name="add"></ion-icon></a>
             </div>
         </div>
-        <?php if($devices == []){?> <div style="margin-bottom: 1em;">Nenhum device encontrado.</div>
-        <?php } else { 
+        <?php if($devices == []){?> <div style="margin-bottom: 1em;">Nenhum aparelho encontrado.</div>
+        <?php } else {
         foreach ($devices as $device) { ?>
-            <button type="text" class="input-content"><?= $device['descricao']; ?></button>
+            <a href="../device/edit.php?cliente=<?= $dados['id']?>&id=<?= $device['id']?>" title="EDITAR APARELHO" >
+                <div type="text" class="input-content"><?= $device['descricao']; ?></div>
+            </a>
         <?php }};?>
     </div>
 
@@ -69,13 +71,15 @@
         <div class="block-head">
             <p style="text-align: center;">GRUPOS</p>
             <div class="add">
-                <a href="./alexa/insert.php" title="ADICIONAR GRUPO" ><ion-icon class="icon50" name="add"></ion-icon></a>
+                <a href="../grupo/insert.php?cliente=<?= $dados['id']?>" title="ADICIONAR GRUPO" ><ion-icon class="icon50" name="add"></ion-icon></a>
             </div>
         </div>
         <?php if($devices == []){?> <div style="margin-bottom: 1em;">Nenhum grupo encontrado.</div>
         <?php } else { 
         foreach ($grupos as $grupo) { ?>
-                <button type="text" class="input-content"><?= $grupo['grupo']; ?></button>
+            <a href="../grupo/edit.php?cliente=<?= $dados['id']?>&id=<?= $grupo['id']?>" title="EDITAR GRUPO" >
+                <div type="text" class="input-content"><?= $grupo['grupo']; ?></div>
+            </a>
         <?php }};?>
     </div>
 

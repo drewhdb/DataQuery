@@ -14,20 +14,17 @@ https://app.moqups.com/tZcdGBvl9FH6ElOaIDSi6uEe26MzgDiP/edit/page/a4ef3fe51
 - escolher data;
 - dizer ajuda -> opções, como relatar problema, ensinar a usar, etc.
 - retornar uma lista de clientes no Return
-https://developer.amazon.com/en-US/blogs/alexa/alexa-skills-kit/2023/02/certification-requirements-privacy-urls-feb-2023
 
 
 **MELHORAR API**
-- dizer que não há dados quando os valores das querye de um grupo estiver zerado 
--> não há dados para ?{nome do grupo}
-- criar base Alexa nos clientes com as views já programadas
-- criar cadastro sem grupo , e não o dizer quando for esse parametro.
+- retestar cenários de tratamento de dados e conexão
 
 **MELHORAR SITE**
-- revisar todas as colunas do banco
 - botão de copiar grupo para outro
-- botão de vincular solicitação ao cliente
 - log na tela de cliente
+- layout campos de lista - centralizado
+- melhorar campo checklist no tamanho do outros campos
+- 
 
 ----------------------------------
 ** DOCUMENTAÇÃO 

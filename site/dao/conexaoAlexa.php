@@ -1,14 +1,14 @@
 <?php 
 
-define("SERVER_ALEXA", '187.0.7.139'); 
-define("USER_ALEXA", 'root'); 
-define("PASSWORD_ALEXA", 'j4c4r3z40!'); 
-define("DB_ALEXA", 'alexa'); 
+define("SERVER", '187.0.7.139'); 
+define("USER", 'root'); 
+define("PASSWORD", 'j4c4r3z40!'); 
+define("DB", 'dataquery'); 
 
 function criaConexaoAlexa()
 {
     try {
-        return new PDO("mysql:host=" . SERVER_ALEXA . ";dbname=" . DB_ALEXA, USER_ALEXA, PASSWORD_ALEXA);
+        return new PDO("mysql:host=" . SERVER . ";dbname=" . DB, USER, PASSWORD);
     } catch (PDOException $e) {
         print("Error: " . $e->getMessage());
     }
