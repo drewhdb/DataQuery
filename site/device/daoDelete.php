@@ -3,7 +3,7 @@
 
     $conexao = criaConexaoAlexa();
 
-    $sql = "DELETE FROM grp WHERE id = '$_GET[id]' and cliente = '$_GET[cliente]';";
+    $sql = "DELETE FROM dvc WHERE id = '$_GET[id]' and cliente = '$_GET[cliente]';";
     $statement = $conexao->prepare($sql);
     $statement->execute();
 

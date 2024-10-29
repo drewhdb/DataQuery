@@ -55,14 +55,14 @@
         <div class="block-head">
             <p style="text-align: center;">APARELHOS</p>
             <div class="add">
-                <a href="../devices/insert.php" title="ADICIONAR APARELHO JÁ CADASTRADO" ><ion-icon class="icon50" name="add"></ion-icon></a>
+                <a href="../device/insert.php?cliente=<?= $dados['id']?>" title="ADICIONAR APARELHO" ><ion-icon class="icon50" name="add"></ion-icon></a>
             </div>
         </div>
         <?php if($devices == []){?> <div style="margin-bottom: 1em;">Nenhum aparelho encontrado.</div>
         <?php } else {
         foreach ($devices as $device) { ?>
-            <a href="../device/edit.php?cliente=<?= $dados['id']?>&id=<?= $device['id']?>" title="EDITAR APARELHO" >
-                <div type="text" class="input-content"><?= $device['descricao']; ?></div>
+            <a href="../device/edit.php?device=<?= $device['id']?>" title="EDITAR APARELHO" >
+                <div type="text" class="input-content" <?php if($device['bloqueado'] == 1) {?> style="background-color: tomato;" <?php }; ?>><?= $device['descricao']; ?></div>
             </a>
         <?php }};?>
     </div>
@@ -74,11 +74,11 @@
                 <a href="../grupo/insert.php?cliente=<?= $dados['id']?>" title="ADICIONAR GRUPO" ><ion-icon class="icon50" name="add"></ion-icon></a>
             </div>
         </div>
-        <?php if($devices == []){?> <div style="margin-bottom: 1em;">Nenhum grupo encontrado.</div>
+        <?php if($grupos == []){?> <div style="margin-bottom: 1em;">Nenhum grupo encontrado.</div>
         <?php } else { 
         foreach ($grupos as $grupo) { ?>
-            <a href="../grupo/edit.php?cliente=<?= $dados['id']?>&id=<?= $grupo['id']?>" title="EDITAR GRUPO" >
-                <div type="text" class="input-content"><?= $grupo['grupo']; ?></div>
+            <a href="../grupo/edit.php?cliente=<?= $dados['id']?>&id=<?= $grupo['id']?>" title="EDITAR GRUPO">
+                <div type="text" class="input-content" <?php if($grupo['ativo'] == 1) {?> style="background-color: rgba(39, 206, 47, 0.829);" <?php }; ?>><?= $grupo['grupo']; ?></div>
             </a>
         <?php }};?>
     </div>

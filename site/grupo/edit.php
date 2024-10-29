@@ -47,13 +47,15 @@
         <div class="block-head">
             <p style="text-align: center;">QUERYES</p>
             <div class="add">
-                <a href="./devices/insert.php" title="ADICIONAR QUERY" ><ion-icon class="icon50" name="add"></ion-icon></a>
+                <a href="../querye/insert.php?cliente=<?= $grupo['cliente']?>&grupo=<?= $grupo['id']?>" title="ADICIONAR QUERY" ><ion-icon class="icon50" name="add"></ion-icon></a>
             </div>
         </div>
         <?php if($queryes == []){?> <div style="margin-bottom: 1em;">Nenhum query encontrado.</div>
         <?php } else { 
         foreach ($queryes as $querye) { ?>
-            <button type="text" class="input-content"><?= $querye['descricao']; ?></button>
+            <a href="../querye/edit.php?grupo=<?= $grupo['id']; ?>&cliente=<?= $grupo['cliente']; ?>&id=<?= $querye['id']; ?>" title="EDITAR QUERYE">
+                <div type="text" class="input-content" <?php if($querye['ativo'] == 1) {?> style="background-color: rgba(39, 206, 47, 0.829);" <?php }; ?>><?= $querye['descricao']; ?></div>
+            </a>
         <?php }};?>
     </div>
 

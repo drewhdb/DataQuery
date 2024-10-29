@@ -34,6 +34,17 @@ function getDevicesClientes($cliente){
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getDevice($id){
+    $conexao = criaConexaoAlexa();
+    $conexao->exec("set names utf8mb4");
+
+    $sql = "SELECT dvc.* FROM dvc where dvc.id = '$id';";
+    $statement = $conexao->prepare($sql);
+    $statement->execute();
+    
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getGruposClientes($cliente){
     $conexao = criaConexaoAlexa();
     $conexao->exec("set names utf8mb4");
@@ -67,6 +78,16 @@ function getQueryes($grupo,$cliente){
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getQueryById($id, $cliente, $grupo){
+    $conexao = criaConexaoAlexa();
+    $conexao->exec("set names utf8mb4");
+
+    $sql = "SELECT * FROM qry where id =  '$id' and cliente = '$cliente' and grupo = '$grupo';";
+    $statement = $conexao->prepare($sql);
+    $statement->execute();
+    
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
 
 function getDashboardClientes(){
     $conexao = criaConexaoAlexa();

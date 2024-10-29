@@ -3,7 +3,6 @@
     include_once "../dao/alexaDao.php";
 
     $cliente = $_GET['cliente'];
-    $grupo = $_GET['grupo'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -26,26 +25,17 @@
             </div>
         </header>
         <container>
-            <fieldset><legend>CLIENTE:</legend>
-                <input type="text" class="input-content disabled" id="CLIENTE" name="CLIENTE" title="CLIENTE" value="<?= $cliente?>" READONLY>
-            </fieldset>
-            <fieldset><legend>GRUPO:</legend>
-                <input type="text" class="input-content disabled" id="GRUPO" name="GRUPO" title="GRUPO" value="<?= $grupo?>" READONLY>
-            </fieldset>
-            <fieldset><legend>Descrição:</legend>
-                <input type="text" class="input-content" id="descricao" name="descricao" title="DESCRICAO" require>
-            </fieldset>
-            <fieldset><legend>Ativo:</legend>
-                <input type="checkbox" id="ativo" name="ativo" title="ATIVO">
-            </fieldset>
-        </container>
-            
-        <container style="width: 95%;">
-            <fieldset style="width: 100%;"><legend>Querye:</legend>
-            <textarea class="input-content" style="width: 100%; height: 10em;" id="query" name="query" title="QUERY"></textarea>
+            <fieldset><legend>Cliente:</legend>
+                <input type="text" class="input-content disabled" id="cliente" name="cliente" title="CLIENTE" value="<?= $cliente?>" READONLY>
             </fieldset>
         </container>
 
+        <container style="width: 95%;">
+            <fieldset style="width: 100%;"><legend>Device:</legend>
+                <textarea class="input-content" style="width: 100%; height: 10em;" id="device" name="device" title="DEVICE"></textarea>
+            </fieldset>
+        </container>
+    </form>
     </div>
 
     <?php include_once "../padroes/footer.html"; ?>

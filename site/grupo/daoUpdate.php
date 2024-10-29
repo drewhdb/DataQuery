@@ -12,5 +12,5 @@
     $sql = "UPDATE grp SET ativo = '$ativo', grupo = '$_GET[grupo]' WHERE id = '$_GET[id]' and cliente = '$_GET[cliente]';";
     $statement = $conexao->prepare($sql);
     $statement->execute();
-    header("Location: ./edit.php?id=".$_GET['id']."&cliente=".$_GET['cliente']);
+    header("Location: ../alexa/edit.php?id=".$_GET['cliente']);
 ?>

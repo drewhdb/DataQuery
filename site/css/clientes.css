@@ -14,23 +14,34 @@ container {
 
 .block {
     text-align: center;
-    width: auto;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
     height: auto;
     border: 1px black solid;
     margin: 1em 5%;
 }
 
-.block-head {
-    margin: 1em 0;
+.block a {
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
-.block .input-content {
-    width: 80%;
+.block .input-content{
+    padding: 1em 0 0 0;
+    width: 90%;
+    margin: 1em 5%;
 }
 
 .add {
     text-align: right;
     margin: -2em 1em 0 0;
+}
+
+.block-head {
+    margin: 1em 0;
 }
 
 @media only screen and (max-width: 750px) {

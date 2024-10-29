@@ -2,15 +2,16 @@
     require_once "../dao/conexaoAlexa.php";
 
     $ativo = '0';
-    if ($_GET['ativo'] == 'on'){
+    if ($_GET['BLOQUEADO'] == 'on'){
         $ativo = '1';
     }
 
     $conexao = criaConexaoAlexa();
     $conexao->exec("set names utf8mb4");
 
-    $sql = "UPDATE grp SET ativo = '$ativo', grupo = '$_GET[grupo]' WHERE id = '$_GET[id]' and cliente = '$_GET[cliente]';";
+    $sql = "UPDATE DVC SET bloqueado = '$ativo', descricao = '$_GET[DESCRICAO]' WHERE id = '$_GET[ID]' and cliente = '$_GET[CLIENTE]';";
+    
     $statement = $conexao->prepare($sql);
     $statement->execute();
-    header("Location: ./edit.php?id=".$_GET['id']."&cliente=".$_GET['cliente']);
+    header("Location: ../alexa/edit.php?id=".$_GET['CLIENTE']);
 ?>
