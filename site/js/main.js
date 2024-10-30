@@ -1,3 +1,7 @@
+function copiarDevice(device) {
+	navigator.clipboard.writeText(device);
+}
+
 //classie
 ( function( window ) {
 

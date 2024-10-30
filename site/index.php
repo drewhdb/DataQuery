@@ -16,7 +16,7 @@
     <div class="container">
         <div class="login">
         <form action="./login.php" method="post">
-            <img src="http://localhost/DataQuery/site/imagem/logo_branco.png">
+            <img src="http://192.168.0.62/DataQuery/site/imagem/logo_branco.png">
             
             <label for="user">usuario</label>
             <input type="text" id="user" name="user" required>

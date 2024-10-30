@@ -6,12 +6,12 @@
 <html lang="pt-br">
 <head>
     <title>edição</title>
-    <?php include_once "../padroes/head.html"; ?>
+    <?php include_once "../padroes/head.php"; ?>
     <link rel="stylesheet" href="../css/clientes.css">
     <link rel="stylesheet" href="../css/device.css">
 </head>
 <body>
-    <?php include_once "../padroes/menu.html"; ?>
+    <?php include_once "../padroes/menu.php"; ?>
 
     <div class="content-wrap">
     <form action="./daoInsert.php" method="get">
@@ -42,6 +42,6 @@
         </container>
     </div></form>
 
-    <?php include_once "../padroes/footer.html"; ?>
+    <?php include_once "../padroes/footer.php"; ?>
 </body>
 </html>

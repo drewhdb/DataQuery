@@ -9,11 +9,11 @@
 <html lang="pt-br">
 <head>
     <title>Inserir</title>
-    <?php include_once "../padroes/head.html"; ?>
+    <?php include_once "../padroes/head.php"; ?>
     <link rel="stylesheet" href="../css/device.css">
     <link rel="stylesheet" href="../css/clientes.css">
 <body>
-    <?php include_once "../padroes/menu.html"; ?>
+    <?php include_once "../padroes/menu.php"; ?>
 
     <div class="content-wrap">
     <form action="./daoInsert.php" method="get">
@@ -40,14 +40,14 @@
             </fieldset>
         </container>
             
-        <container style="width: 95%;">
-            <fieldset style="width: 100%;"><legend>Querye:</legend>
+        <container>
+            <fieldset style="width: 90%;"><legend>Querye:</legend>
             <textarea class="input-content" style="width: 100%; height: 10em;" id="query" name="query" title="QUERY"></textarea>
             </fieldset>
         </container>
 
     </div>
 
-    <?php include_once "../padroes/footer.html"; ?>
+    <?php include_once "../padroes/footer.php"; ?>
 </body>
 </html>

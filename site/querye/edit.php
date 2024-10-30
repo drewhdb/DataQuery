@@ -9,11 +9,11 @@
 <html lang="pt-br">
 <head>
     <title>edição</title>
-    <?php include_once "../padroes/head.html"; ?>
+    <?php include_once "../padroes/head.php"; ?>
     <link rel="stylesheet" href="../css/device.css">
     <link rel="stylesheet" href="../css/clientes.css">
 <body>
-    <?php include_once "../padroes/menu.html"; ?>
+    <?php include_once "../padroes/menu.php"; ?>
 
     <div class="content-wrap">
     <form action="./daoUpdate.php" method="get">
@@ -44,13 +44,13 @@
             </fieldset>
         </container>
             
-        <container style="width: 95%;">
-            <fieldset style="width: 100%;"><legend>Querye:</legend>
+        <container>
+            <fieldset style="width: 90%;"><legend>Querye:</legend>
             <textarea class="input-content" style="width: 100%; height: 10em;" id="query" name="query" title="QUERY"><?= $querye['query']?></textarea>
             </fieldset>
         </container>
     </form>
     </div>
-    <?php include_once "../padroes/footer.html"; ?>
+    <?php include_once "../padroes/footer.php"; ?>
 </body>
 </html>

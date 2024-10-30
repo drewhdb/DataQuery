@@ -8,11 +8,11 @@
 <html lang="pt-br">
 <head>
     <title>Inserir</title>
-    <?php include_once "../padroes/head.html"; ?>
+    <?php include_once "../padroes/head.php"; ?>
     <link rel="stylesheet" href="../css/device.css">
     <link rel="stylesheet" href="../css/clientes.css">
 <body>
-    <?php include_once "../padroes/menu.html"; ?>
+    <?php include_once "../padroes/menu.php"; ?>
 
     <div class="content-wrap">
     <form action="./daoInsert.php" method="get">
@@ -34,6 +34,6 @@
     </container>
     </div>
 
-    <?php include_once "../padroes/footer.html"; ?>
+    <?php include_once "../padroes/footer.php"; ?>
 </body>
 </html>

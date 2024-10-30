@@ -13,11 +13,11 @@
 <html lang="pt-br">
 <head>
     <title>Alexa</title>
-    <?php include_once "./padroes/head.html"; ?>
+    <?php include_once "./padroes/head.php"; ?>
     <link rel="stylesheet" href="./css/cliente.css">
 </head>
 <body>
-    <?php include_once "./padroes/menu.html"; ?>
+    <?php include_once "./padroes/menu.php"; ?>
 
     <div class="content-wrap">
         <header>
@@ -35,6 +35,6 @@
         </container>
     </div>
 
-    <?php include_once "./padroes/footer.html"; ?>
+    <?php include_once "./padroes/footer.php"; ?>
 </body>
 </html>

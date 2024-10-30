@@ -122,5 +122,27 @@ function getDashboardErros(){
     return $statement->fetchAll(PDO::FETCH_ASSOC)[0]['value'];
 }
 
+function getSolicitacoes(){
+    $conexao = criaConexaoAlexa();
+    $conexao->exec("set names utf8mb4");
+
+    $sql = "SELECT * FROM slc;";
+    $statement = $conexao->prepare($sql);
+    $statement->execute();
+    
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getSolicitacao($deviceid){
+    $conexao = criaConexaoAlexa();
+    $conexao->exec("set names utf8mb4");
+
+    $sql = "SELECT * FROM slc where deviceid = '$deviceid';";
+    $statement = $conexao->prepare($sql);
+    $statement->execute();
+    
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 ?>
